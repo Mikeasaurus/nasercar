@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhpk8qpriwgtt"]
+
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="1_hfoke"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_i1xwg"]
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer"]
+replication_config = SubResource("SceneReplicationConfig_i1xwg")
+public_visibility = false
+script = ExtResource("1_hfoke")

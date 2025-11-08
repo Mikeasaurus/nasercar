@@ -1,0 +1,408 @@
+[gd_scene load_steps=14 format=3 uid="uid://culfs1hcaohhm"]
+
+[ext_resource type="Texture2D" uid="uid://dhkns5jdsokx5" path="res://items/beetle.png" id="1_fs3b4"]
+[ext_resource type="Script" uid="uid://cbgj37s6j3g2q" path="res://menus/help.gd" id="1_hpd5p"]
+[ext_resource type="Texture2D" uid="uid://co8nl3wxthqgo" path="res://items/lavajava.png" id="2_qey5n"]
+[ext_resource type="Texture2D" uid="uid://cqmnccveeaxu5" path="res://menus/arrow_up.png" id="2_yngvg"]
+[ext_resource type="Texture2D" uid="uid://c75py8357paxe" path="res://items/nailpolish.png" id="3_pif1m"]
+[ext_resource type="Texture2D" uid="uid://cpxkmo6qnkb3k" path="res://menus/arrow_left.png" id="3_ve08x"]
+[ext_resource type="Texture2D" uid="uid://cxpjsdkmaqnw2" path="res://menus/arrow_right.png" id="4_4jp4b"]
+[ext_resource type="Texture2D" uid="uid://cfhya08sd73lc" path="res://items/mangoslime.png" id="4_xwx7c"]
+[ext_resource type="Texture2D" uid="uid://pb6vtc7ahlxk" path="res://menus/ctrlkey.png" id="5_f3ylw"]
+[ext_resource type="Texture2D" uid="uid://qri1ymcgcnnj" path="res://items/meteor.png" id="5_g2o11"]
+[ext_resource type="Texture2D" uid="uid://dj2ehw53ucubn" path="res://menus/spacebar.png" id="5_um2h5"]
+[ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="6_shoa8"]
+[ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="12_kmtil"]
+
+[node name="Help" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hpd5p")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Help Menu"
+horizontal_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+current_tab = 0
+
+[node name="Controls" type="MarginContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(1200, 580)
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+metadata/_tab_index = 0
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 0
+columns = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+
+[node name="UpArrow" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer/CenterContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("2_yngvg")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="UpArrowText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Accelerate"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+
+[node name="LeftArrow" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("3_ve08x")
+expand_mode = 4
+
+[node name="RightArrow" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("4_4jp4b")
+expand_mode = 4
+
+[node name="LeftRightLabel" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Steer"
+
+[node name="Spacebar" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+custom_minimum_size = Vector2(256, 128)
+layout_mode = 2
+texture = ExtResource("5_um2h5")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="SpacebarText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Brake"
+
+[node name="CenterContainer2" type="CenterContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+
+[node name="Ctrl" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer/CenterContainer2"]
+custom_minimum_size = Vector2(192, 128)
+layout_mode = 2
+texture = ExtResource("5_f3ylw")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="CtrlText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Controls/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Use item"
+
+[node name="Items" type="MarginContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(1200, 580)
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+columns = 2
+
+[node name="Beetle" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("1_fs3b4")
+expand_mode = 4
+
+[node name="BeetleText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Beetle:
+This friendly little bug just wants to say hello."
+
+[node name="Coffee" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_qey5n")
+expand_mode = 4
+
+[node name="CoffeeText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Coffee:
+A cup of LJ's special blend will give you the boost you need."
+
+[node name="NailPolish" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("3_pif1m")
+expand_mode = 4
+
+[node name="NailPolishText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Nail Polish:
+This stuff has a tendency to make a huge mess. 
+Cute color, though!"
+
+[node name="MangoSlime" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_xwx7c")
+expand_mode = 4
+
+[node name="MangoSlimeText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mango Slime:
+What is that OH GOD THE SMELL"
+
+[node name="Meteor" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("5_g2o11")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="MeteorText" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Space Rock:
+Don't worry, this is just a small piece that broke off the main asteroid.
+Technically, this one [i]is[/i] called a meteor!"
+fit_content = true
+
+[node name="About" type="MarginContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(1200, 580)
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+metadata/_tab_index = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Title" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "NASERCAR"
+fit_content = true
+
+[node name="Code" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Code and Graphics by Mike
+GVH character profile pics are based on the stickers from the KO_OP discord server.
+Made with Godot
+Godot license: [url]https://godotengine.org/license[/url]"
+fit_content = true
+
+[node name="Naomi" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 32
+text = "\"You can now play as Naomi\" meme created by Wolf Nanaki."
+fit_content = true
+
+[node name="GVH" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Characters and game elements from [i]Goodbye Volcano High[/i] by KO_OP
+[url]https://goodbyevolcanohigh.com/[/url]"
+fit_content = true
+
+[node name="Font" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "
+Logo font: \"Hauser\" by Pixel Sagas
+[url]https://www.pixelsagas.com/?download=hauser[/url]"
+fit_content = true
+
+[node name="Audio" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "
+Audio files:
+
+engine04-loop.wav by Erdie
+[url]https://freesound.org/s/158728/[/url]
+License: Attribution 4.0
+
+Shoot - car door slam.wav by diogorusso
+[url]https://freesound.org/s/659463/[/url]
+License: Creative Commons 0
+
+beep pager.wav by AGFX
+[url]https://freesound.org/s/20440/[/url]
+License: Attribution 4.0
+
+Long beep_011.wav by AlienXXX
+[url]https://freesound.org/s/196236/[/url]
+License: Attribution 4.0
+
+Chrysler LHS tire squeal 04 (04-25-2009).wav by audible-edge
+[url][https://freesound.org/s/71739/[/url]
+License: Creative Commons 0
+
+05966 water surfacing splashes.wav by Robinhood76
+[url]https://freesound.org/s/320185/[/url]
+License: Attribution NonCommercial 4.0
+
+Tires on Gravel Road 1 by OBXJohn
+[url]https://freesound.org/s/251661/[/url]
+License: Creative Commons 0
+
+Success Jingle by JustInvoke
+[url]https://freesound.org/s/446111/[/url]
+License: Attribution 4.0
+
+dice-rolls-D20-big by aalorv
+[url]https://freesound.org/s/744985/[/url]
+License: Attribution 4.0
+
+whoosh.wav by petenice
+[url]https://freesound.org/s/9509/[/url]
+License: Creative Commons 0
+
+NPX Throat Gathering Spit 2.wav by noahpardo
+[url]https://freesound.org/s/352402/[/url]
+License: Creative Commons 0
+
+Wet Splat 1.mp3 by nebulasnails
+[url]https://freesound.org/s/495118/[/url]
+License: Creative Commons 0
+
+bee in a mug.wav by tedoo
+[url]https://freesound.org/s/650750/[/url]
+License: Creative Commons 0
+
+Bottle Squirt.wav by jimbo555
+[url]https://freesound.org/s/630484/[/url]
+License: Creative Commons 0
+
+Slurping, Sipping and Gulp 4 by redafs
+[url]https://freesound.org/s/348645/[/url]
+License: Attribution 4.0
+
+Thunder (Kraków, Poland, 20.05.2013) by vonz
+[url]https://freesound.org/s/188767/[/url]
+License: Creative Commons 0
+
+Jet_Whoosh.WAV by Benboncan
+[url]https://freesound.org/s/167563/[/url]
+License: Attribution 4.0
+
+Metal Rub 10.aif by be-steele
+[url]https://freesound.org/s/128690/[/url]
+License: Attribution 4.0
+
+glass-shattering_03.ogg by C_Rogers
+[url]https://freesound.org/s/203373/[/url]
+License: Creative Commons 0
+
+click1.wav by annabloom
+[url]https://freesound.org/s/219069/[/url]
+License: Attribution NonCommercial 4.0
+
+HONDA CR-V START.wav by xtrgamr
+[url]https://freesound.org/s/253614/[/url]
+License: Attribution 4.0
+
+\"Coach\" Whistle.aiff by connersaw8
+[url]https://freesound.org/s/161662/[/url]s
+License: Creative Commons 0
+
+horn.wav by maciejadach
+[url]https://freesound.org/s/571322/[/url]
+License: Creative Commons 0
+
+JM_TRANSPORT_EXT_Horn 01a - Car_Short_Mini Countryman.wav by Julien_Matthey
+[url]https://freesound.org/s/436589/[/url]
+License: Creative Commons 0
+
+Car horn beep beep two beeps honk honk by AmishRob
+[url]https://freesound.org/s/423990/[/url]
+License: Creative Commons 0
+
+J1_Car_Horn.mp3 by Iamgiorgio
+[url]https://freesound.org/s/371833/[/url]
+License: Creative Commons 0
+
+car horn honking.wav by 99021905683
+[url]https://freesound.org/s/571348/[/url]
+License: Creative Commons 0
+
+Car Horn Honk by etcd_09
+[url]https://freesound.org/s/435497/[/url]
+License: Attribution 3.0
+
+Short-horn.wav by 14FValtrovaT
+[url]https://freesound.org/s/419698/[/url]
+License: Attribution NonCommercial 3.0
+
+Car Horn.mp3 by DigPro120
+[url]https://freesound.org/s/432641/[/url]
+License: Creative Commons 0
+"
+fit_content = true
+
+[node name="BackButton" parent="MarginContainer/CenterContainer/VBoxContainer" instance=ExtResource("12_kmtil")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="FullScreenToggle" parent="." instance=ExtResource("6_shoa8")]

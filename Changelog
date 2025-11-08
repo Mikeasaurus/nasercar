@@ -1,0 +1,31 @@
+Version 1.1.0 (Nov 6, 2025)
+	- Updated to Godot 4.4.1.
+	- Added a new track (snowy), and a track selection menu.
+	- Added a map overlay to the game, so the player knows where they are
+	  on the track (and where the other karts are).
+	- Can now quit multiplayer races instead of having to close the window.
+	- CPU karts now honk their horns when bumping other cars.
+	- CPU karts can more easily recover when getting bumped off the track.
+	- Added headshot pics to the car selection menu.
+	- Fixed some minor bugs, added a few more.
+
+Version 1.0.2 (Sep 6, 2025)
+	- More minor fixes, coinciding with fanzine v1.1 update:
+	  - Fix textbox input for multiplayer games on touchscreen.
+	  - Added a few buildings to the last part of the race, to break up
+	    the monotony.
+	  - Include character name in the final stats page, not just "Player".
+
+Version 1.0.1 (Aug 31, 2025)
+	- Some minor bug fixes for the fanzine submission:
+	  - Fix some info text disappearing after multiplayer option is used.
+	  - Fix beetle sometimes colliding with own car in multiplayer, due
+	    to frame lag after launching it.
+	  - Use player's item when the crossing the finish line, to fix a bug
+	    where the post-game autopilot is unable to pick up and use items.
+	  - Small speedup after doing some profiling (not significant though).
+	  - Reduce jittering with touchscreen controls in multiplayer.
+	  - Enable on-screen keyboard for touch-based devices.
+
+Version 1.0.0 (Aug 6, 2025)
+	- This is the version that was submitted for the fanzine.

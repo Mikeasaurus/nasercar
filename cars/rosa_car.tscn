@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsew28lh05yyv"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_nowth"]
+[ext_resource type="Texture2D" uid="uid://bigebkmy6b6o5" path="res://cars/rosa-headshot1.png" id="2_7v6l0"]
+[ext_resource type="Texture2D" uid="uid://d3ffe0w08xacs" path="res://cars/rosacar.png" id="2_53cs7"]
+[ext_resource type="Texture2D" uid="uid://ibhfeh6dv0qq" path="res://cars/rosa-tiny.png" id="2_x4aul"]
+[ext_resource type="Texture2D" uid="uid://difjx7b5texbn" path="res://cars/rosa-headshot2.png" id="3_odbbg"]
+[ext_resource type="AudioStream" uid="uid://c8fs5vhup63p8" path="res://audio/571348__99021905683__car-horn-honking.wav" id="4_r3ynl"]
+[ext_resource type="Texture2D" uid="uid://cpue6qcq0p58g" path="res://cars/rosa-headshot3.png" id="4_rsfvs"]
+
+[node name="RosaCar" instance=ExtResource("1_nowth")]
+display_name = "Rosa"
+headshot = Array[CompressedTexture2D]([ExtResource("2_7v6l0"), ExtResource("3_odbbg"), ExtResource("4_rsfvs")])
+tinypic = ExtResource("2_x4aul")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_53cs7")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_r3ynl")

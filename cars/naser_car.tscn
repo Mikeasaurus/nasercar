@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://bx45dedd8jvb2"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_bn5dt"]
+[ext_resource type="Texture2D" uid="uid://bg4tndbyyvrhq" path="res://cars/naser-headshot1.png" id="2_di5na"]
+[ext_resource type="Texture2D" uid="uid://7hwie2g6tx57" path="res://cars/naser-tiny.png" id="2_tqamq"]
+[ext_resource type="Texture2D" uid="uid://bhrx5umxr30fq" path="res://cars/nasercar.png" id="2_ym51k"]
+[ext_resource type="Texture2D" uid="uid://bvwhjvwnyijym" path="res://cars/naser-headshot2.png" id="3_sf04g"]
+[ext_resource type="AudioStream" uid="uid://cu4x2eno24eol" path="res://audio/423990__amishrob__car-horn-beep-beep-two-beeps-honk-honk.wav" id="4_pkrki"]
+[ext_resource type="Texture2D" uid="uid://chu6apksas85j" path="res://cars/naser-headshot3.png" id="4_rmvpb"]
+
+[node name="NaserCar" instance=ExtResource("1_bn5dt")]
+display_name = "Naser"
+headshot = Array[CompressedTexture2D]([ExtResource("2_di5na"), ExtResource("3_sf04g"), ExtResource("4_rmvpb")])
+tinypic = ExtResource("2_tqamq")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_ym51k")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_pkrki")

@@ -1,0 +1,221 @@
+[gd_scene load_steps=24 format=3 uid="uid://0dummt6q0fyv"]
+
+[ext_resource type="Script" uid="uid://dkggvt4e0rr2g" path="res://menus/car_selection.gd" id="1_4n2t3"]
+[ext_resource type="PackedScene" uid="uid://v25n41i6nk2g" path="res://menus/car_selection_panel.tscn" id="1_k8wlo"]
+[ext_resource type="PackedScene" uid="uid://bimruttii2nbg" path="res://cars/fang_car.tscn" id="2_hdpo1"]
+[ext_resource type="PackedScene" uid="uid://t281m7hks87i" path="res://cars/trish_car.tscn" id="2_qoyv3"]
+[ext_resource type="PackedScene" uid="uid://bx45dedd8jvb2" path="res://cars/naser_car.tscn" id="3_8s5ch"]
+[ext_resource type="PackedScene" uid="uid://ceeynox2pxkxl" path="res://cars/reed_car.tscn" id="4_45eya"]
+[ext_resource type="PackedScene" uid="uid://dsew28lh05yyv" path="res://cars/rosa_car.tscn" id="5_l7qal"]
+[ext_resource type="PackedScene" uid="uid://rem6honk7xys" path="res://cars/sage_car.tscn" id="6_35ugy"]
+[ext_resource type="PackedScene" uid="uid://d254t8huvudx6" path="res://cars/stella_car.tscn" id="7_umfb0"]
+[ext_resource type="PackedScene" uid="uid://bvoj5fwm75u8v" path="res://cars/naomi_car.tscn" id="8_1csdl"]
+[ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="11_1wam5"]
+[ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="11_smolx"]
+[ext_resource type="AudioStream" uid="uid://cstdfowewsv0g" path="res://audio/253614__xtrgamr__honda-cr-v-start.wav" id="13_s6hmk"]
+[ext_resource type="AudioStream" uid="uid://dtlad5xjdaldk" path="res://audio/446111__justinvoke__success-jingle.wav" id="16_yi1oq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvpv1"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ib0w"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6amwd"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ad2ef"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ydc3"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urqxe"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0msy1"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnwgw"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l1iqd"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="CarSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4n2t3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "Choose A Character"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 4
+
+[node name="Fang" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pvpv1")
+car_scene = ExtResource("2_hdpo1")
+
+[node name="Trish" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ib0w")
+car_scene = ExtResource("2_qoyv3")
+
+[node name="Naser" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6amwd")
+car_scene = ExtResource("3_8s5ch")
+
+[node name="Reed" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ad2ef")
+car_scene = ExtResource("4_45eya")
+
+[node name="Rosa" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ydc3")
+car_scene = ExtResource("5_l7qal")
+
+[node name="Sage" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_urqxe")
+car_scene = ExtResource("6_35ugy")
+
+[node name="Stella" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0msy1")
+car_scene = ExtResource("7_umfb0")
+
+[node name="Naomi" parent="MarginContainer/CenterContainer/VBoxContainer/GridContainer" instance=ExtResource("1_k8wlo")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gnwgw")
+car_scene = ExtResource("8_1csdl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="BackButton" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("11_smolx")]
+layout_mode = 2
+
+[node name="RaceButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+disabled = true
+text = "     RACE!     "
+
+[node name="Info" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
+
+[node name="FullScreenToggle" parent="." instance=ExtResource("11_1wam5")]
+
+[node name="Headshot" type="AnimatedSprite2D" parent="."]
+position = Vector2(1541, 296)
+sprite_frames = SubResource("SpriteFrames_l1iqd")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1395.0
+offset_top = 413.0
+offset_right = 1688.0
+offset_bottom = 480.0
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+
+[node name="SelectionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_yi1oq")
+
+[node name="StartEngineSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_s6hmk")
+volume_db = 10.0
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton" to="." method="_on_race_button_pressed"]

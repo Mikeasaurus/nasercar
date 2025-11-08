@@ -1,0 +1,116 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnd8afldnrcld"]
+
+[ext_resource type="Script" uid="uid://8iul8p0f2h5x" path="res://menus/multiplayer.gd" id="1_8ougk"]
+[ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="2_im7l4"]
+[ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="2_mr17g"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_28faj"]
+properties/0/path = NodePath("MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoRacesLabel:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="Multiplayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8ougk")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Multiplayer"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1000, 400)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="NoRacesLabel" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "No existing multiplayer games available to join.
+You can create a new one below."
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="HandleLabel" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Your handle:"
+
+[node name="Handle" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+placeholder_text = "Player Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 50
+
+[node name="BackButton" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_im7l4")]
+layout_mode = 2
+
+[node name="NewButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "  Create New Race  "
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+
+[node name="FullScreenToggle" parent="." instance=ExtResource("2_mr17g")]
+
+[node name="RaceEntrySpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_28faj")
+
+[node name="NameWarning" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Please enter your handle for multiplayer."
+horizontal_alignment = 1
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewButton" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ClickSound" method="play"]

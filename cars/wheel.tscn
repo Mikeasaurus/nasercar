@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://dux0gd0slf1l5"]
+
+[ext_resource type="Texture2D" uid="uid://da341swyulgv7" path="res://cars/wheel.png" id="2_dld2u"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="2_mksc1"]
+
+[sub_resource type="Curve" id="Curve_on00f"]
+_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(1, 500), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ki2ey"]
+colors = PackedColorArray(0.866667, 0.866667, 0.619608, 0.101961, 0.866667, 0.866667, 0.619608, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jmgio"]
+properties/0/path = NodePath("Sprite2D:modulate")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Particles1:color")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("Particles1:emitting")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("Particles2:color")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("Particles2:emitting")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("Dust:emitting")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+
+[node name="Wheel" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dld2u")
+
+[node name="Particles1" type="CPUParticles2D" parent="."]
+emitting = false
+direction = Vector2(0, -1)
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+linear_accel_min = -500.0
+linear_accel_max = -500.0
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+
+[node name="Particles2" type="CPUParticles2D" parent="."]
+emitting = false
+direction = Vector2(0, -1)
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+linear_accel_min = -500.0
+linear_accel_max = -500.0
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+
+[node name="Dust" type="CPUParticles2D" parent="."]
+z_index = 10
+emitting = false
+amount = 100
+lifetime = 5.0
+emission_shape = 3
+emission_rect_extents = Vector2(10, 10)
+gravity = Vector2(0, 0)
+angle_max = 90.0
+scale_amount_curve = SubResource("Curve_on00f")
+color_ramp = SubResource("Gradient_ki2ey")
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_jmgio")
+script = ExtResource("2_mksc1")

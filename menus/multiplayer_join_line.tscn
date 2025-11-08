@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4sjk72cnx2l3"]
+
+[ext_resource type="AudioStream" uid="uid://blb4gqxo35l3b" path="res://audio/219069__annabloom__click1.wav" id="1_082eu"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_68qko"]
+properties/0/path = NodePath("VBoxContainer/Host:text")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("VBoxContainer/NumPlayers:text")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="MultiplayerJoinLine" type="HBoxContainer"]
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Host" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "[Somebody] is starting a new race"
+horizontal_alignment = 2
+clip_text = true
+
+[node name="NumPlayers" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Track: [track] -- [#] Players joined so far"
+horizontal_alignment = 2
+
+[node name="JoinButton" type="Button" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "   Join   "
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_082eu")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_68qko")
+
+[connection signal="pressed" from="JoinButton" to="ClickSound" method="play"]

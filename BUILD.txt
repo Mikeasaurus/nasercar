@@ -1,0 +1,34 @@
+Notes on building / installing:
+
+Client:
+
+Client side is exported as Web (runnable).  Some extra stuff is added into the
+custom html header to get a thumbnail preview for links.  Also set no cache
+on the page, which (if I read online correctly) will force browsers to
+re-download the context if it's updated (e.g. for bug fixes).
+
+E.g., something like this in the Head Include section:
+
+<meta property="og:title" content="Nasercar">
+<meta property="og:description" content="GVH kart racing game.">
+<meta property="og:image" content="https://mikeasaurus.github.io/nasercar/preview2.png" >
+<meta http-equiv="Cache-Control" content="no-cache">
+
+Need to manually copy the "preview*.png" file to the web server.
+
+Also, enable virtual keyboard to help with mobile devices.  Mobile browsers
+don't react to Godot's text boxes with their native virtual keyboard, so
+Godot has to provide its own keyboard.
+
+Server:
+
+Multiplayer server is exported as Linux (runnable).
+When launching the server, use options --headless --max-fps=45
+
+This avoids initializing a display (which may not even exist on a VPS!), and
+tones down the FPS.  Too many FPS, and the Websocket communication gets all
+wonky.  However, too few FPS makes it too choppy/slow to play.  45 seems like
+a good number after some tests.
+
+
+Remember to uncheck "DEBUG" when exporting both client / server parts.

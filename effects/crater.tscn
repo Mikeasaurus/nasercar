@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://bt70ftdpif78n"]
+
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="1_brtrl"]
+
+[sub_resource type="Gradient" id="Gradient_5oacv"]
+colors = PackedColorArray(0.133333, 0.133333, 0.133333, 0.333333, 0.133333, 0.133333, 0.133333, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onlml"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:z_index")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("CPUParticles2D:emitting")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
+[node name="Crater" type="Node2D"]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(5, 5)
+emitting = false
+amount = 500
+lifetime = 10.0
+one_shot = true
+explosiveness = 0.97
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 100.0
+gravity = Vector2(0, 0)
+angle_max = 90.0
+scale_amount_min = 200.0
+scale_amount_max = 200.0
+color_ramp = SubResource("Gradient_5oacv")
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_onlml")
+script = ExtResource("1_brtrl")

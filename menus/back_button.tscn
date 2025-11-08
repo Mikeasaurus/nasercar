@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://yq4nt46yrohd"]
+
+[ext_resource type="Script" uid="uid://dsvuodvq1ykj2" path="res://menus/back_button.gd" id="1_ft3uo"]
+
+[node name="BackButton" type="Button"]
+theme_override_font_sizes/font_size = 64
+text = "     Back     "
+script = ExtResource("1_ft3uo")
+
+[connection signal="pressed" from="." to="." method="play_back_sound"]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://bimruttii2nbg"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_fuodk"]
+[ext_resource type="Texture2D" uid="uid://cfby6xhp8wjuw" path="res://cars/fangcar.png" id="2_ayufj"]
+[ext_resource type="Texture2D" uid="uid://dd38uq2i5hwhl" path="res://cars/fang-tiny.png" id="2_cwebq"]
+[ext_resource type="Texture2D" uid="uid://3aji4qfbdf6m" path="res://cars/fang-headshot1.png" id="2_uwhij"]
+[ext_resource type="Texture2D" uid="uid://ddof1cbufmk4t" path="res://cars/fang-headshot2.png" id="3_gc6eg"]
+[ext_resource type="AudioStream" uid="uid://b08rqp4cxtnj0" path="res://audio/571322__maciejadach__horn.wav" id="4_nmrj5"]
+[ext_resource type="Texture2D" uid="uid://b26qxffkui0mj" path="res://cars/fang-headshot3.png" id="4_ypwig"]
+
+[node name="FangCar" instance=ExtResource("1_fuodk")]
+display_name = "Fang"
+headshot = Array[CompressedTexture2D]([ExtResource("2_uwhij"), ExtResource("3_gc6eg"), ExtResource("4_ypwig")])
+tinypic = ExtResource("2_cwebq")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_ayufj")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_nmrj5")

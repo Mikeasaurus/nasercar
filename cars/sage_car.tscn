@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://rem6honk7xys"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_weuxx"]
+[ext_resource type="Texture2D" uid="uid://bdrgyqiur2hu5" path="res://cars/sage-tiny.png" id="2_at3hm"]
+[ext_resource type="Texture2D" uid="uid://cjhyq7gw3wlua" path="res://cars/sage-headshot1.png" id="2_axwod"]
+[ext_resource type="Texture2D" uid="uid://dxbrsu6d40dpw" path="res://cars/sagecar.png" id="2_worvs"]
+[ext_resource type="Texture2D" uid="uid://ggywn32keg0v" path="res://cars/sage-headshot2.png" id="3_lffbd"]
+[ext_resource type="AudioStream" uid="uid://cgadx452tbryi" path="res://audio/435497__etcd_09__car-horn-honk.wav" id="4_qvgp3"]
+[ext_resource type="Texture2D" uid="uid://b1vmhxgwa876m" path="res://cars/sage-headshot3.png" id="4_vh8wx"]
+
+[node name="SageCar" instance=ExtResource("1_weuxx")]
+display_name = "Sage"
+headshot = Array[CompressedTexture2D]([ExtResource("2_axwod"), ExtResource("3_lffbd"), ExtResource("4_vh8wx")])
+tinypic = ExtResource("2_at3hm")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_worvs")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_qvgp3")

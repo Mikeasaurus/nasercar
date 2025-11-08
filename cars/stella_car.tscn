@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://d254t8huvudx6"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_mmlhy"]
+[ext_resource type="Texture2D" uid="uid://dqy58kyj6xqye" path="res://cars/stella-tiny.png" id="2_3tf60"]
+[ext_resource type="Texture2D" uid="uid://b6vn8ajjeo70q" path="res://cars/stellacar.png" id="2_bsrsc"]
+[ext_resource type="Texture2D" uid="uid://d11mncdfxq1e5" path="res://cars/stella-headshot1.png" id="2_i1utw"]
+[ext_resource type="Texture2D" uid="uid://b7mcdwa1shrji" path="res://cars/stella-headshot2.png" id="3_wh6ga"]
+[ext_resource type="AudioStream" uid="uid://bf6ftl6oblok1" path="res://audio/419698__14fvaltrovat__short-horn.wav" id="4_3imhp"]
+[ext_resource type="Texture2D" uid="uid://ciw1g2fkcwfxw" path="res://cars/stella-headshot3.png" id="4_taeld"]
+
+[node name="StellaCar" instance=ExtResource("1_mmlhy")]
+display_name = "Stella"
+headshot = Array[CompressedTexture2D]([ExtResource("2_i1utw"), ExtResource("3_wh6ga"), ExtResource("4_taeld")])
+tinypic = ExtResource("2_3tf60")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_bsrsc")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_3imhp")

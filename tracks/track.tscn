@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://j4ohs2agmh6j"]
+
+[ext_resource type="Script" uid="uid://44j203c8tlla" path="res://tracks/track.gd" id="1_juy78"]
+[ext_resource type="PackedScene" uid="uid://bx45dedd8jvb2" path="res://cars/naser_car.tscn" id="2_juy78"]
+[ext_resource type="PackedScene" uid="uid://bimruttii2nbg" path="res://cars/fang_car.tscn" id="3_diy3r"]
+[ext_resource type="PackedScene" uid="uid://bvoj5fwm75u8v" path="res://cars/naomi_car.tscn" id="4_dopxy"]
+[ext_resource type="PackedScene" uid="uid://dsew28lh05yyv" path="res://cars/rosa_car.tscn" id="5_hw64q"]
+[ext_resource type="PackedScene" uid="uid://t281m7hks87i" path="res://cars/trish_car.tscn" id="6_fidbc"]
+[ext_resource type="PackedScene" uid="uid://ceeynox2pxkxl" path="res://cars/reed_car.tscn" id="7_1eybs"]
+[ext_resource type="PackedScene" uid="uid://rem6honk7xys" path="res://cars/sage_car.tscn" id="8_3flin"]
+[ext_resource type="PackedScene" uid="uid://d254t8huvudx6" path="res://cars/stella_car.tscn" id="9_rxkvr"]
+
+[sub_resource type="Curve2D" id="Curve2D_2l6ov"]
+
+[node name="Track" type="Node2D"]
+editor_description = "This is the base scene for designing tracks.  To make a new track, create an instance of this scene and fill in the details of tiles, starting car positions, and track path."
+script = ExtResource("1_juy78")
+
+[node name="TilesBelowCars" type="Node2D" parent="."]
+editor_description = "TileMapLayers that should be displayed underneath the cars.  This can include the ground tiles and the road."
+
+[node name="StartingPositions" type="Node2D" parent="."]
+
+[node name="NaserCar" parent="StartingPositions" instance=ExtResource("2_juy78")]
+rotation = 3.14159
+
+[node name="FangCar" parent="StartingPositions" instance=ExtResource("3_diy3r")]
+position = Vector2(-139, 3)
+rotation = -3.14159
+
+[node name="NaomiCar" parent="StartingPositions" instance=ExtResource("4_dopxy")]
+position = Vector2(133, 3)
+rotation = 3.14159
+
+[node name="RosaCar" parent="StartingPositions" instance=ExtResource("5_hw64q")]
+position = Vector2(-134, 163)
+rotation = 3.14159
+
+[node name="TrishCar" parent="StartingPositions" instance=ExtResource("6_fidbc")]
+position = Vector2(-2, 163)
+rotation = 3.14159
+
+[node name="ReedCar" parent="StartingPositions" instance=ExtResource("7_1eybs")]
+position = Vector2(135, 159)
+rotation = 3.14159
+
+[node name="SageCar" parent="StartingPositions" instance=ExtResource("8_3flin")]
+position = Vector2(-69, 330)
+rotation = 3.14159
+
+[node name="StellaCar" parent="StartingPositions" instance=ExtResource("9_rxkvr")]
+position = Vector2(77, 332)
+rotation = 3.14159
+
+[node name="TilesAboveCars" type="Node2D" parent="."]
+editor_description = "TileMapLayers that should be displayed on top of the cars.  This can include item boxes and above-ground obstacles."
+
+[node name="TrackPath" type="Path2D" parent="."]
+editor_description = "The path that cars should follow for the race."
+curve = SubResource("Curve2D_2l6ov")
+
+[node name="SkidmarkSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://carfgs1mg40pn")
+spawn_path = NodePath("../StartingPositions")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cws2bh67ogk0f"]
+
+[ext_resource type="Script" uid="uid://blpi7y7isaiqp" path="res://race-interface/map_overlay.gd" id="1_0nf3x"]
+
+[node name="MapOverlay" type="CanvasLayer"]
+script = ExtResource("1_0nf3x")

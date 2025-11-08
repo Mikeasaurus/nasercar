@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://t281m7hks87i"]
+
+[ext_resource type="PackedScene" uid="uid://xkg3ucnitsra" path="res://cars/car.tscn" id="1_1ud34"]
+[ext_resource type="Texture2D" uid="uid://yksgjstsh2fs" path="res://cars/trish-tiny.png" id="2_3dtc5"]
+[ext_resource type="Texture2D" uid="uid://xa1mdus3a5qh" path="res://cars/trishcar.png" id="2_4ygip"]
+[ext_resource type="Texture2D" uid="uid://bv63trraogogp" path="res://cars/trish-headshot1.png" id="2_eh20v"]
+[ext_resource type="Texture2D" uid="uid://6wmatb51lwfw" path="res://cars/trish-headshot2.png" id="3_suu45"]
+[ext_resource type="AudioStream" uid="uid://b027xumbuuxxx" path="res://audio/432641__digpro120__car-horn.mp3" id="4_um8oh"]
+[ext_resource type="Texture2D" uid="uid://dhd8fc5n2vrkm" path="res://cars/trish-headshot3.png" id="4_y2l7x"]
+
+[node name="TrishCar" instance=ExtResource("1_1ud34")]
+display_name = "Trish"
+headshot = Array[CompressedTexture2D]([ExtResource("2_eh20v"), ExtResource("3_suu45"), ExtResource("4_y2l7x")])
+tinypic = ExtResource("2_3dtc5")
+
+[node name="Body" parent="." index="2"]
+texture = ExtResource("2_4ygip")
+
+[node name="HornSound" parent="." index="7"]
+stream = ExtResource("4_um8oh")

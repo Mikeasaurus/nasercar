@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://carfgs1mg40pn"]
+
+[ext_resource type="Script" uid="uid://udx2elqcome8" path="res://cars/skid_mark.gd" id="1_auf4s"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="2_ckwxw"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2lkli"]
+properties/0/path = NodePath(".:default_color")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:z_index")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:points")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
+[node name="SkidMark" type="Line2D"]
+script = ExtResource("1_auf4s")
+
+[node name="CleanupTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_2lkli")
+script = ExtResource("2_ckwxw")
+
+[connection signal="timeout" from="CleanupTimer" to="." method="_on_cleanup_timer_timeout"]

@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkswkyttwn7xp"]
+
+[ext_resource type="Texture2D" uid="uid://bmq46o035mfux" path="res://menus/YouCanNowPlayAsNaomi.png" id="1_3eb1k"]
+[ext_resource type="Script" uid="uid://drj4scgfns4vi" path="res://menus/naomi.gd" id="1_wvo5x"]
+[ext_resource type="PackedScene" uid="uid://bvoj5fwm75u8v" path="res://cars/naomi_car.tscn" id="3_7vw4a"]
+
+[sub_resource type="Curve2D" id="Curve2D_fnutc"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1061, 743, 0, 0, 0, 0, 3001, 753, 0, 0, 0, 0, 3011, 945, 0, 0, 0, 0, -1051, 955)
+}
+point_count = 4
+
+[node name="Naomi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wvo5x")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("1_3eb1k")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_fnutc")
+
+[node name="NaomiCar" parent="." instance=ExtResource("3_7vw4a")]
+position = Vector2(-1051, 848)
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

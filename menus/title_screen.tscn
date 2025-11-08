@@ -1,0 +1,208 @@
+[gd_scene load_steps=14 format=3 uid="uid://nvfby80br4pn"]
+
+[ext_resource type="Script" uid="uid://bmr3hkjq2ly7a" path="res://menus/title_screen.gd" id="1_26oih"]
+[ext_resource type="FontFile" uid="uid://ble5tl2cuo0pm" path="res://fonts/Hauser Italic.otf" id="1_ygr87"]
+[ext_resource type="FontFile" uid="uid://c2i81u5hcckps" path="res://fonts/Hauser Bold Italic.otf" id="2_4f3c5"]
+[ext_resource type="Texture2D" uid="uid://c2tw0w1x6fm0b" path="res://menus/lines.png" id="3_xwgxp"]
+[ext_resource type="AudioStream" uid="uid://blb4gqxo35l3b" path="res://audio/219069__annabloom__click1.wav" id="5_eujrm"]
+[ext_resource type="PackedScene" uid="uid://bx45dedd8jvb2" path="res://cars/naser_car.tscn" id="5_fxytf"]
+[ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="5_w0neb"]
+[ext_resource type="PackedScene" uid="uid://culfs1hcaohhm" path="res://menus/help.tscn" id="7_31u7g"]
+[ext_resource type="PackedScene" uid="uid://0dummt6q0fyv" path="res://menus/car_selection.tscn" id="8_82lv5"]
+[ext_resource type="PackedScene" uid="uid://d4fjxuie6wstg" path="res://menus/track_selection.tscn" id="8_dbvjn"]
+[ext_resource type="PackedScene" uid="uid://dnd8afldnrcld" path="res://menus/multiplayer.tscn" id="9_6v5ik"]
+[ext_resource type="PackedScene" uid="uid://bkswkyttwn7xp" path="res://menus/naomi.tscn" id="9_lriup"]
+
+[sub_resource type="Curve2D" id="Curve2D_uem21"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 398, 719, 0, 0, 0, 0, 1057, 865, 0, 0, 0, 0, 1577, 879, 0, 0, 0, 0, 1591, 448, 0, 0, 0, 0, 1363, 188, 0, 0, 0, 0, 697, 138, 0, 0, 0, 0, 419, 423, 0, 0, 0, 0, 401, 719)
+}
+point_count = 8
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_26oih")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="ErrorMessage" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "This is a sample message."
+horizontal_alignment = 1
+
+[node name="Title" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+color = Color(0.329412, 0.32549, 0.345098, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+color = Color(0.329412, 0.32549, 0.345098, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+color = Color(0.443137, 0.458824, 0.470588, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+color = Color(0.443137, 0.458824, 0.470588, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+color = Color(0.996078, 0.580392, 0.407843, 1)
+
+[node name="Title" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+custom_minimum_size = Vector2(1200, 0)
+layout_mode = 2
+theme_override_fonts/italics_font = ExtResource("1_ygr87")
+theme_override_fonts/bold_italics_font = ExtResource("2_4f3c5")
+theme_override_font_sizes/bold_italics_font_size = 96
+theme_override_font_sizes/italics_font_size = 240
+bbcode_enabled = true
+text = "[i]NASERCAR[/i]"
+fit_content = true
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
+position = Vector2(134, 150)
+scale = Vector2(1, 0.785062)
+skew = 0.268781
+texture = ExtResource("3_xwgxp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Spacer1" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+color = Color(1, 1, 1, 0)
+
+[node name="SinglePlayer" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Race against CPU karts"
+theme_override_font_sizes/font_size = 72
+text = "  Single Player  "
+
+[node name="Multiplayer" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Race against other players online"
+theme_override_font_sizes/font_size = 72
+text = "  Multiplayer  "
+
+[node name="Help" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Information about the game"
+theme_override_font_sizes/font_size = 72
+text = "Help"
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+stream = ExtResource("5_eujrm")
+
+[node name="Spacer2" type="ColorRect" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+color = Color(1, 1, 1, 0)
+
+[node name="FullScreenToggle" parent="." instance=ExtResource("5_w0neb")]
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -84.0
+offset_right = -21.0
+offset_bottom = -17.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "v1.1.0"
+
+[node name="NaserCar" parent="." instance=ExtResource("5_fxytf")]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_uem21")
+
+[node name="CarTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="Help" parent="." instance=ExtResource("7_31u7g")]
+visible = false
+layout_mode = 1
+
+[node name="Multiplayer" parent="." instance=ExtResource("9_6v5ik")]
+visible = false
+layout_mode = 1
+
+[node name="TrackSelection" parent="." instance=ExtResource("8_dbvjn")]
+visible = false
+layout_mode = 1
+
+[node name="CarSelection" parent="." instance=ExtResource("8_82lv5")]
+visible = false
+layout_mode = 1
+
+[node name="Naomi" parent="." instance=ExtResource("9_lriup")]
+process_mode = 4
+visible = false
+layout_mode = 1
+
+[node name="RaceSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")
+
+[node name="CarSelectionMenuSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")
+
+[connection signal="visibility_changed" from="MarginContainer" to="." method="_on_margin_container_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SinglePlayer" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SinglePlayer" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/ClickSound" method="play"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/Multiplayer" to="." method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/Multiplayer" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/ClickSound" method="play"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/Help" to="." method="_on_help_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/Help" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/ClickSound" method="play"]
+[connection signal="timeout" from="CarTimer" to="." method="_on_car_timer_timeout"]

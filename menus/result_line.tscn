@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmhhi1mw7s55r"]
+
+[ext_resource type="Script" uid="uid://lv1hwkhigmnj" path="res://menus/result_line.gd" id="1_hht88"]
+
+[node name="ResultLine" type="HBoxContainer"]
+theme_override_constants/separation = 50
+script = ExtResource("1_hht88")
+
+[node name="Place" type="Label" parent="."]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+text = "-"
+horizontal_alignment = 2
+
+[node name="Car" type="SubViewportContainer" parent="."]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="Car"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(75, 75)
+render_target_update_mode = 4
+
+[node name="Name" type="Label" parent="."]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+text = "???"
+
+[node name="Time" type="Label" parent="."]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+text = "?:??"

@@ -1,0 +1,800 @@
+[gd_scene load_steps=45 format=3 uid="uid://xkg3ucnitsra"]
+
+[ext_resource type="PackedScene" uid="uid://dux0gd0slf1l5" path="res://cars/wheel.tscn" id="1_41m3k"]
+[ext_resource type="Script" uid="uid://coq2gttv7f4qw" path="res://cars/car.gd" id="1_88aey"]
+[ext_resource type="Texture2D" uid="uid://rtfavhcxxo25" path="res://cars/carslime.png" id="3_2eyeq"]
+[ext_resource type="AudioStream" uid="uid://dxqavad1nchgy" path="res://audio/158728__erdie__engine04-loop.wav" id="3_5h513"]
+[ext_resource type="AudioStream" uid="uid://c32p6fxjy0hxb" path="res://audio/659463__diogorusso__shoot-car-door-slam.wav" id="4_af8g7"]
+[ext_resource type="AudioStream" uid="uid://n06h5klivc0s" path="res://audio/71739__audible-edge__chrysler-lhs-tire-squeal-04-04-25-2009.wav" id="5_n08ew"]
+[ext_resource type="Texture2D" uid="uid://cqesv3ttvdhap" path="res://cars/arrow.png" id="5_sxyoi"]
+[ext_resource type="AudioStream" uid="uid://bpo6mxi5kkuy3" path="res://audio/251661__obxjohn__tires-on-gravel-road-1.mp3" id="6_cuk5v"]
+[ext_resource type="AudioStream" uid="uid://cwa27fwp1fu21" path="res://audio/128690__be-steele__metal-rub-10.mp3" id="7_6nyvj"]
+[ext_resource type="AudioStream" uid="uid://04tvpxlw4ukb" path="res://audio/320185__robinhood76__05966-water-surfacing-splashes.wav" id="7_xb7e0"]
+[ext_resource type="AudioStream" uid="uid://ck8qxnm7h80pv" path="res://audio/495118__nebulasnails__wet-splat-1.mp3" id="9_x1whg"]
+[ext_resource type="Texture2D" uid="uid://dma2jdn00negl" path="res://cars/iced.png" id="11_5ldgu"]
+[ext_resource type="AudioStream" uid="uid://88hgpp0mmg15" path="res://audio/348645__redafs__slurping-sipping-and-gulp-4.mp3" id="11_myl1q"]
+[ext_resource type="AudioStream" uid="uid://cgnsq3fqkf7fo" path="res://audio/167563__benboncan__jet_whoosh.wav" id="12_petsi"]
+[ext_resource type="AudioStream" uid="uid://cin7d6iutcrbn" path="res://audio/203373__c_rogers__glass-shattering_03.ogg" id="12_u1opb"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="14_diguy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ldm1"]
+radius = 35.0
+height = 116.0
+
+[sub_resource type="Gradient" id="Gradient_hwaf6"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.686275, 0.862745, 0.243137, 0.8, 0.686275, 0.862745, 0.243137, 0.8, 0.686275, 0.862745, 0.243137, 0)
+
+[sub_resource type="Gradient" id="Gradient_u1opb"]
+colors = PackedColorArray(0.309804, 0.737255, 0.847059, 0.6, 0.309804, 0.737255, 0.847059, 0)
+
+[sub_resource type="Gradient" id="Gradient_tagwm"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.207843, 0.67451, 1, 0, 0.207843, 0.67451, 1, 0, 8.66354e-07, 0.346963, 0.550486, 1, 0.207843, 0.67451, 1, 0, 0.207843, 0.67451, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gn1ql"]
+gradient = SubResource("Gradient_tagwm")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_vum66"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.705882, 0.878431, 1, 0, 0.705882, 0.878431, 1, 0, 0.705882, 0.878431, 1, 1, 0.705882, 0.878431, 1, 0, 0.705882, 0.878431, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pfulr"]
+gradient = SubResource("Gradient_vum66")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_d4qvj"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.207843, 0.67451, 1, 0, 0, 0.117647, 0.490196, 0, 0.000607891, 0.115844, 0.490201, 1, 0, 0.117647, 0.490196, 0, 0.207843, 0.67451, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u1opb"]
+gradient = SubResource("Gradient_d4qvj")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_rtkmi"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.705882, 0.878431, 1, 0, 0.25098, 0.360784, 0.678431, 0, 0.25098, 0.360784, 0.678431, 1, 0.25098, 0.360784, 0.678431, 0, 0.705882, 0.878431, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d4qvj"]
+gradient = SubResource("Gradient_rtkmi")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_5mwrh"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.870588, 0.223529, 0, 0, 0.870588, 0.223529, 0, 0, 0.870588, 0.223529, 0, 1, 0.870588, 0.223529, 0, 0, 0.870588, 0.223529, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eqlvp"]
+gradient = SubResource("Gradient_5mwrh")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_fe6vg"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(1, 0.537255, 0, 0, 1, 0.537255, 0, 0, 1, 0.537255, 0, 1, 1, 0.537255, 0, 0, 1, 0.537255, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bkyo7"]
+gradient = SubResource("Gradient_fe6vg")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_ohobg"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.282353, 0.145098, 0, 1, 0.282353, 0.145098, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_1g0ry"]
+offsets = PackedFloat32Array(0, 0.9, 1, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wl1xd"]
+gradient = SubResource("Gradient_1g0ry")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Curve" id="Curve_k0skd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 10), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_bp3qb"]
+offsets = PackedFloat32Array(0, 0.193333, 0.253333, 0.453333, 1)
+colors = PackedColorArray(1, 0.686275, 0.0235294, 1, 1, 0.686275, 0.0235294, 1, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 1, 1, 1, 0)
+
+[sub_resource type="Animation" id="Animation_yp50d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ne20p"]
+resource_name = "pulsing"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.5), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w7snb"]
+_data = {
+&"RESET": SubResource("Animation_yp50d"),
+&"pulsing": SubResource("Animation_ne20p")
+}
+
+[sub_resource type="Animation" id="Animation_7rcyg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dhufv"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_b1cuh"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_18i12"]
+_data = {
+&"RESET": SubResource("Animation_7rcyg"),
+&"fade_in": SubResource("Animation_dhufv"),
+&"fade_out": SubResource("Animation_b1cuh")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kxogy"]
+properties/0/path = NodePath("Body:modulate")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("EngineSound:playing")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("CrashSound:playing")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("TireSquealSound:playing")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("GravelSound:playing")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("GratingSound:playing")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("Slimed/SplatSound:playing")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("Coffee/SippingSound:playing")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath("Meteor/WhooshSound:playing")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("Slimed/Slime:modulate")
+properties/9/spawn = true
+properties/9/replication_mode = 2
+properties/10/path = NodePath("Slimed/Slime:visible")
+properties/10/spawn = true
+properties/10/replication_mode = 2
+properties/11/path = NodePath("Meteor/Shadow:visible")
+properties/11/spawn = true
+properties/11/replication_mode = 2
+properties/12/path = NodePath("Meteor/Shadow:scale")
+properties/12/spawn = true
+properties/12/replication_mode = 2
+properties/13/path = NodePath("Meteor/Shadow:position")
+properties/13/spawn = true
+properties/13/replication_mode = 2
+properties/14/path = NodePath("Meteor/Shadow:modulate")
+properties/14/spawn = true
+properties/14/replication_mode = 2
+properties/15/path = NodePath(".:z_index")
+properties/15/spawn = true
+properties/15/replication_mode = 2
+properties/16/path = NodePath(".:position")
+properties/16/spawn = true
+properties/16/replication_mode = 1
+properties/17/path = NodePath(".:linear_velocity")
+properties/17/spawn = true
+properties/17/replication_mode = 1
+properties/18/path = NodePath(".:rotation")
+properties/18/spawn = true
+properties/18/replication_mode = 1
+properties/19/path = NodePath(".:angular_velocity")
+properties/19/spawn = true
+properties/19/replication_mode = 1
+properties/20/path = NodePath("Wheels/FrontLeft:rotation")
+properties/20/spawn = true
+properties/20/replication_mode = 1
+properties/21/path = NodePath("Wheels/FrontRight:rotation")
+properties/21/spawn = true
+properties/21/replication_mode = 1
+properties/22/path = NodePath("Wheels/RearLeft:rotation")
+properties/22/spawn = true
+properties/22/replication_mode = 1
+properties/23/path = NodePath("Wheels/RearRight:rotation")
+properties/23/spawn = true
+properties/23/replication_mode = 1
+properties/24/path = NodePath("Slimed/CPUParticles2D:emitting")
+properties/24/spawn = true
+properties/24/replication_mode = 2
+properties/25/path = NodePath("WaterSplash/Particles:emitting")
+properties/25/spawn = true
+properties/25/replication_mode = 2
+properties/26/path = NodePath("LavaSplash/Particles:emitting")
+properties/26/spawn = true
+properties/26/replication_mode = 2
+properties/27/path = NodePath("Coffee/CPUParticles2D:emitting")
+properties/27/spawn = true
+properties/27/replication_mode = 2
+properties/28/path = NodePath("LostArrow:rotation")
+properties/28/spawn = true
+properties/28/replication_mode = 2
+properties/29/path = NodePath("LostArrow:visible")
+properties/29/spawn = true
+properties/29/replication_mode = 2
+properties/30/path = NodePath("LostArrow:modulate")
+properties/30/spawn = true
+properties/30/replication_mode = 2
+properties/31/path = NodePath("LostArrow:scale")
+properties/31/spawn = true
+properties/31/replication_mode = 2
+properties/32/path = NodePath("WaterSplash:rotation")
+properties/32/spawn = true
+properties/32/replication_mode = 2
+properties/33/path = NodePath("LavaSplash:rotation")
+properties/33/spawn = true
+properties/33/replication_mode = 2
+properties/34/path = NodePath("WaterSplash/SplashSound:playing")
+properties/34/spawn = true
+properties/34/replication_mode = 2
+properties/35/path = NodePath("LavaSplash/SplashSound:playing")
+properties/35/spawn = true
+properties/35/replication_mode = 2
+properties/36/path = NodePath("Meteor/CPUParticles2D:emitting")
+properties/36/spawn = true
+properties/36/replication_mode = 2
+properties/37/path = NodePath("EngineSound:pitch_scale")
+properties/37/spawn = true
+properties/37/replication_mode = 2
+properties/38/path = NodePath("Camera2D:zoom")
+properties/38/spawn = true
+properties/38/replication_mode = 2
+properties/39/path = NodePath("Iced/Ice:visible")
+properties/39/spawn = true
+properties/39/replication_mode = 2
+properties/40/path = NodePath("Iced/ShatterSound:playing")
+properties/40/spawn = true
+properties/40/replication_mode = 2
+properties/41/path = NodePath("Iced/CPUParticles2D:emitting")
+properties/41/spawn = true
+properties/41/replication_mode = 2
+properties/42/path = NodePath("IcyWaterSplash:rotation")
+properties/42/spawn = true
+properties/42/replication_mode = 2
+properties/43/path = NodePath("IcyWaterSplash/Particles:emitting")
+properties/43/spawn = true
+properties/43/replication_mode = 2
+properties/44/path = NodePath("IcyWaterSplash/SplashSound:playing")
+properties/44/spawn = true
+properties/44/replication_mode = 2
+properties/45/path = NodePath("Slimed:modulate")
+properties/45/spawn = true
+properties/45/replication_mode = 2
+properties/46/path = NodePath("Coffee:modulate")
+properties/46/spawn = true
+properties/46/replication_mode = 2
+properties/47/path = NodePath("Nameplate:text")
+properties/47/spawn = true
+properties/47/replication_mode = 2
+properties/48/path = NodePath("Nameplate:visible")
+properties/48/spawn = true
+properties/48/replication_mode = 2
+properties/49/path = NodePath("HornSound:playing")
+properties/49/spawn = true
+properties/49/replication_mode = 2
+
+[node name="Car" type="RigidBody2D"]
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 2
+script = ExtResource("1_88aey")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_4ldm1")
+
+[node name="Wheels" type="Node2D" parent="."]
+
+[node name="FrontLeft" parent="Wheels" instance=ExtResource("1_41m3k")]
+position = Vector2(40, 30)
+
+[node name="FrontRight" parent="Wheels" instance=ExtResource("1_41m3k")]
+position = Vector2(-40, 30)
+
+[node name="RearLeft" parent="Wheels" instance=ExtResource("1_41m3k")]
+position = Vector2(40, -36)
+
+[node name="RearRight" parent="Wheels" instance=ExtResource("1_41m3k")]
+position = Vector2(-40, -36)
+
+[node name="Body" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+
+[node name="EngineSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_5h513")
+autoplay = true
+
+[node name="CrashSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_af8g7")
+pitch_scale = 0.5
+
+[node name="CrashSoundTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="HornSound" type="AudioStreamPlayer2D" parent="."]
+
+[node name="TireSquealSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_n08ew")
+
+[node name="GravelSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_cuk5v")
+
+[node name="GratingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_6nyvj")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+visible = false
+z_index = 10
+rotation = 3.14159
+texture = ExtResource("5_sxyoi")
+
+[node name="Nameplate" type="Label" parent="."]
+visible = false
+z_index = 1
+offset_right = 96.0
+offset_bottom = 23.0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="Slimed" type="Node2D" parent="."]
+
+[node name="Slime" type="Sprite2D" parent="Slimed"]
+visible = false
+modulate = Color(1, 1, 1, 0.8)
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("3_2eyeq")
+
+[node name="SplatSound" type="AudioStreamPlayer2D" parent="Slimed"]
+stream = ExtResource("9_x1whg")
+volume_db = 8.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Slimed"]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 300.0
+initial_velocity_max = 500.0
+damping_min = 1000.0
+damping_max = 1000.0
+scale_amount_min = 8.0
+scale_amount_max = 8.0
+color = Color(0.686275, 0.862745, 0.243137, 0.8)
+color_ramp = SubResource("Gradient_hwaf6")
+
+[node name="Iced" type="Node2D" parent="."]
+
+[node name="Ice" type="Sprite2D" parent="Iced"]
+visible = false
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("11_5ldgu")
+
+[node name="ShatterSound" type="AudioStreamPlayer2D" parent="Iced"]
+stream = ExtResource("12_u1opb")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Iced"]
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(45, 60)
+direction = Vector2(0, -1)
+spread = 60.0
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+scale_amount_min = 20.0
+scale_amount_max = 20.0
+color_ramp = SubResource("Gradient_u1opb")
+
+[node name="WaterSplash" type="Node2D" parent="."]
+
+[node name="Particles" type="CPUParticles2D" parent="WaterSplash"]
+emitting = false
+amount = 500
+lifetime = 1.2
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0, -1)
+spread = 30.0
+initial_velocity_min = 500.0
+initial_velocity_max = 750.0
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+color = Color(0.705882, 0.878431, 1, 1)
+
+[node name="Ripple" type="Node2D" parent="WaterSplash"]
+visible = false
+
+[node name="Dark" type="TextureRect" parent="WaterSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -124.0
+offset_right = -92.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_gn1ql")
+
+[node name="Light" type="TextureRect" parent="WaterSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -132.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_pfulr")
+
+[node name="SplashSound" type="AudioStreamPlayer2D" parent="WaterSplash"]
+stream = ExtResource("7_xb7e0")
+volume_db = 8.0
+
+[node name="IcyWaterSplash" type="Node2D" parent="."]
+
+[node name="Particles" type="CPUParticles2D" parent="IcyWaterSplash"]
+emitting = false
+amount = 500
+lifetime = 1.2
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0, -1)
+spread = 30.0
+initial_velocity_min = 500.0
+initial_velocity_max = 750.0
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+color = Color(0.25098, 0.360784, 0.678431, 1)
+
+[node name="Ripple" type="Node2D" parent="IcyWaterSplash"]
+visible = false
+
+[node name="Dark" type="TextureRect" parent="IcyWaterSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -124.0
+offset_right = -92.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_u1opb")
+
+[node name="Light" type="TextureRect" parent="IcyWaterSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -132.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_d4qvj")
+
+[node name="SplashSound" type="AudioStreamPlayer2D" parent="IcyWaterSplash"]
+stream = ExtResource("7_xb7e0")
+volume_db = 8.0
+
+[node name="LavaSplash" type="Node2D" parent="."]
+
+[node name="Particles" type="CPUParticles2D" parent="LavaSplash"]
+emitting = false
+amount = 500
+lifetime = 1.2
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0, -1)
+spread = 30.0
+initial_velocity_min = 500.0
+initial_velocity_max = 750.0
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+color = Color(1, 0.537255, 0, 1)
+
+[node name="Ripple" type="Node2D" parent="LavaSplash"]
+visible = false
+
+[node name="Dark" type="TextureRect" parent="LavaSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -124.0
+offset_right = -92.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_eqlvp")
+
+[node name="Light" type="TextureRect" parent="LavaSplash/Ripple"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -132.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_bkyo7")
+
+[node name="SplashSound" type="AudioStreamPlayer2D" parent="LavaSplash"]
+stream = ExtResource("7_xb7e0")
+volume_db = 8.0
+pitch_scale = 0.2
+
+[node name="Coffee" type="Node2D" parent="."]
+
+[node name="SippingSound" type="AudioStreamPlayer2D" parent="Coffee"]
+stream = ExtResource("11_myl1q")
+volume_db = 8.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Coffee"]
+position = Vector2(0, -1)
+emitting = false
+amount = 25
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+scale_amount_min = 16.0
+scale_amount_max = 16.0
+color_ramp = SubResource("Gradient_ohobg")
+
+[node name="Meteor" type="Node2D" parent="."]
+z_index = 1
+
+[node name="Shadow" type="TextureRect" parent="Meteor"]
+visible = false
+modulate = Color(1, 1, 1, 0.360784)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -500.0
+offset_right = -400.0
+offset_bottom = -400.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(10, 10)
+texture = SubResource("GradientTexture2D_wl1xd")
+
+[node name="WhooshSound" type="AudioStreamPlayer2D" parent="Meteor"]
+stream = ExtResource("12_petsi")
+volume_db = 8.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Meteor"]
+emitting = false
+amount = 200
+lifetime = 2.0
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0, -1)
+spread = 30.0
+gravity = Vector2(-150, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+angular_velocity_max = 10.0
+angle_max = 90.0
+scale_amount_min = 8.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_k0skd")
+color_ramp = SubResource("Gradient_bp3qb")
+
+[node name="LostArrow" type="Polygon2D" parent="."]
+visible = false
+z_index = 10
+color = Color(1, 1, 0.501961, 0.8)
+polygon = PackedVector2Array(-24, -129, -23, -193, -42, -194, 2, -248, 46, -198, 25, -196, 24, -130)
+
+[node name="Pulsing" type="AnimationPlayer" parent="LostArrow"]
+libraries = {
+&"": SubResource("AnimationLibrary_w7snb")
+}
+autoplay = "pulsing"
+
+[node name="Fade" type="AnimationPlayer" parent="LostArrow"]
+libraries = {
+&"": SubResource("AnimationLibrary_18i12")
+}
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_kxogy")
+script = ExtResource("14_diguy")
+
+[connection signal="timeout" from="CrashSoundTimer" to="." method="_on_crash_sound_timer_timeout"]

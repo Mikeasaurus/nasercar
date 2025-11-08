@@ -1,0 +1,462 @@
+[gd_scene load_steps=27 format=3 uid="uid://b4tklj1nsft7a"]
+
+[ext_resource type="Script" uid="uid://biv1bchek2mp7" path="res://world.gd" id="1_5oo6t"]
+[ext_resource type="PackedScene" uid="uid://cws2bh67ogk0f" path="res://race-interface/map_overlay.tscn" id="2_26xuy"]
+[ext_resource type="AudioStream" uid="uid://y6kwxto4xwjt" path="res://audio/161662__connersaw8__coach-whistle.wav" id="2_bc84e"]
+[ext_resource type="AudioStream" uid="uid://xnlgqle1fo4l" path="res://audio/20440__agfx__beep-pager.wav" id="10_leqvv"]
+[ext_resource type="AudioStream" uid="uid://dgii4vaux02bg" path="res://audio/196236__alienxxx__long-beep_011.wav" id="11_l7rta"]
+[ext_resource type="Texture2D" uid="uid://cfhya08sd73lc" path="res://items/mangoslime.png" id="16_4ogqs"]
+[ext_resource type="Texture2D" uid="uid://co8nl3wxthqgo" path="res://items/lavajava.png" id="17_4hydi"]
+[ext_resource type="Texture2D" uid="uid://dl8nm3d0gagqq" path="res://items/itembox.png" id="17_851se"]
+[ext_resource type="Texture2D" uid="uid://qri1ymcgcnnj" path="res://items/meteor.png" id="17_fpwx0"]
+[ext_resource type="Texture2D" uid="uid://c75py8357paxe" path="res://items/nailpolish.png" id="17_oey53"]
+[ext_resource type="AudioStream" uid="uid://sb6b80flvtof" path="res://audio/744985__aalorv__dice-rolls-d20-big.wav" id="18_6u6mv"]
+[ext_resource type="AudioStream" uid="uid://yl6b31bsw74b" path="res://audio/9509__petenice__whoosh.wav" id="19_v8dck"]
+[ext_resource type="Texture2D" uid="uid://dhkns5jdsokx5" path="res://items/beetle.png" id="20_2txdk"]
+[ext_resource type="Texture2D" uid="uid://djp4ddgp1u356" path="res://items/mangojumpscare1.png" id="24_agiui"]
+[ext_resource type="Texture2D" uid="uid://chgkx7ospw7nq" path="res://items/mangojumpscare2.png" id="25_i4jp1"]
+[ext_resource type="Texture2D" uid="uid://ri5uq3ksqa3o" path="res://items/slimedscreen1.png" id="26_ftddp"]
+[ext_resource type="Texture2D" uid="uid://ik57hsfx7nxe" path="res://items/slimedscreen2.png" id="27_mxj7h"]
+[ext_resource type="AudioStream" uid="uid://yggwxfin8it2" path="res://audio/352402__noahpardo__npx-throat-gathering-spit-2.wav" id="28_iaess"]
+[ext_resource type="AudioStream" uid="uid://ck8qxnm7h80pv" path="res://audio/495118__nebulasnails__wet-splat-1.mp3" id="29_xj85u"]
+[ext_resource type="PackedScene" uid="uid://dscelbyqu4ok3" path="res://menus/pause_menu.tscn" id="30_kkwd5"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="31_2r05m"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_krpt8"]
+color = Color(0.466667, 0.466667, 0.466667, 1)
+thickness = 3
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vjn0m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("24_agiui")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_i4jp1")
+}],
+"loop": true,
+"name": &"mouth_open",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m0kfm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("26_ftddp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_mxj7h")
+}],
+"loop": false,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="Curve" id="Curve_3box1"]
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(1, 300), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pcovh"]
+properties/0/path = NodePath("CanvasLayer/GoLabel:text")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("CanvasLayer/GoLabel:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("CanvasLayer/GoLabel:modulate")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("CanvasLayer/GoLabel:scale")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CanvasLayer/GoLabel:position")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("CanvasLayer/FadeIn:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("CanvasLayer/FadeIn:modulate")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("Beep1:playing")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath("Beep2:playing")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("CanvasLayer/Place:modulate")
+properties/9/spawn = true
+properties/9/replication_mode = 2
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_5oo6t")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GoLabel" type="Label" parent="CanvasLayer"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(562, 0)
+offset_left = 625.0
+offset_top = 1.0
+offset_right = 681.0
+offset_bottom = 35.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_font_sizes/font_size = 240
+text = "GO!!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FadeIn" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Place" type="ScrollContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -261.0
+offset_top = -175.0
+grow_horizontal = 0
+grow_vertical = 0
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Place"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Place/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 2
+
+[node name="Fir" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "1"
+
+[node name="St" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "st"
+
+[node name="Seco" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.768627, 0.768627, 0.768627, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "2"
+
+[node name="Nd" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.768627, 0.768627, 0.768627, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "nd"
+
+[node name="Thi" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "3"
+
+[node name="Rd" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "rd"
+
+[node name="Four" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "4"
+
+[node name="Th4" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "th"
+
+[node name="Fif" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "5"
+
+[node name="Th5" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "th"
+
+[node name="Six" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "6"
+
+[node name="Th6" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "th"
+
+[node name="Seven" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "7"
+
+[node name="Th7" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "th"
+
+[node name="Eigh" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 128
+text = "8"
+
+[node name="Th8" type="Label" parent="CanvasLayer/Place/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "th"
+
+[node name="LapFinished" type="Label" parent="CanvasLayer"]
+visible = false
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -17.0
+offset_right = 31.5
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_font_sizes/font_size = 240
+text = "Lap X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinishSound" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("2_bc84e")
+
+[node name="Stats" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -287.5
+offset_top = 35.0
+offset_right = 287.5
+offset_bottom = 185.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Stats"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.666667)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Stats"]
+layout_mode = 2
+
+[node name="Places" type="VBoxContainer" parent="CanvasLayer/Stats/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Stats/CenterContainer/Places"]
+layout_mode = 2
+theme_override_constants/separation = 5
+theme_override_styles/separator = SubResource("StyleBoxLine_krpt8")
+
+[node name="DoneButton" type="Button" parent="CanvasLayer"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -65.5
+offset_top = -105.0
+offset_right = 65.5
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "     Done     "
+
+[node name="MapOverlay" parent="." instance=ExtResource("2_26xuy")]
+
+[node name="Beep1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_leqvv")
+
+[node name="Beep2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_l7rta")
+pitch_scale = 1.8
+
+[node name="ItemSelect" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="CenterContainer" type="CenterContainer" parent="ItemSelect"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -128.0
+offset_right = 128.0
+offset_bottom = 256.0
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(128, 0)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ItemSelect/CenterContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ItemSelect/CenterContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="Blank" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+
+[node name="NailPolish" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("17_oey53")
+
+[node name="Coffee" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("17_4hydi")
+
+[node name="Meteor" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("17_fpwx0")
+
+[node name="MangoSlime" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("16_4ogqs")
+
+[node name="Beetle" type="TextureRect" parent="ItemSelect/CenterContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("20_2txdk")
+
+[node name="TextureRect" type="TextureRect" parent="ItemSelect/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("17_851se")
+
+[node name="D20Sound" type="AudioStreamPlayer" parent="ItemSelect"]
+stream = ExtResource("18_6u6mv")
+
+[node name="WhooshSound" type="AudioStreamPlayer" parent="ItemSelect"]
+stream = ExtResource("19_v8dck")
+
+[node name="ScreenEffects" type="CanvasLayer" parent="."]
+
+[node name="MangoSlime" type="Node2D" parent="ScreenEffects"]
+visible = false
+
+[node name="Mango" type="AnimatedSprite2D" parent="ScreenEffects/MangoSlime"]
+texture_filter = 1
+position = Vector2(-200, 1080)
+scale = Vector2(9, 9)
+sprite_frames = SubResource("SpriteFrames_vjn0m")
+centered = false
+offset = Vector2(0, -108)
+
+[node name="Slime" type="AnimatedSprite2D" parent="ScreenEffects/MangoSlime"]
+visible = false
+texture_filter = 1
+position = Vector2(960, 0)
+scale = Vector2(10, 10)
+sprite_frames = SubResource("SpriteFrames_m0kfm")
+offset = Vector2(0, 54)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="ScreenEffects/MangoSlime"]
+position = Vector2(441, 752)
+emitting = false
+amount = 100
+lifetime = 0.4
+one_shot = true
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(1, -0.5)
+spread = 30.0
+initial_velocity_min = 2000.0
+initial_velocity_max = 2000.0
+angular_velocity_max = 100.0
+angle_max = 45.0
+scale_amount_curve = SubResource("Curve_3box1")
+color = Color(0.686275, 0.862745, 0.243137, 1)
+
+[node name="HorkSound" type="AudioStreamPlayer" parent="ScreenEffects/MangoSlime"]
+stream = ExtResource("28_iaess")
+
+[node name="SplatSound" type="AudioStreamPlayer" parent="ScreenEffects/MangoSlime"]
+stream = ExtResource("29_xj85u")
+
+[node name="PauseMenu" parent="ScreenEffects" instance=ExtResource("30_kkwd5")]
+visible = false
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_pcovh")
+script = ExtResource("31_2r05m")
+
+[node name="BeetleSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cxnaar8r01bmv")
+spawn_path = NodePath("..")
+
+[node name="NailPolishSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://b7q1tvemcohtp")
+spawn_path = NodePath("..")
+
+[node name="ImpactSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://c1p70okfvp84r", "uid://bt70ftdpif78n")
+spawn_path = NodePath("..")
+
+[node name="TrackSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="CanvasLayer/DoneButton" to="." method="_on_done_button_pressed"]
