@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://xkg3ucnitsra"]
+[gd_scene load_steps=46 format=3 uid="uid://xkg3ucnitsra"]
 
 [ext_resource type="PackedScene" uid="uid://dux0gd0slf1l5" path="res://cars/wheel.tscn" id="1_41m3k"]
 [ext_resource type="Script" uid="uid://coq2gttv7f4qw" path="res://cars/car.gd" id="1_88aey"]
@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://cgnsq3fqkf7fo" path="res://audio/167563__benboncan__jet_whoosh.wav" id="12_petsi"]
 [ext_resource type="AudioStream" uid="uid://cin7d6iutcrbn" path="res://audio/203373__c_rogers__glass-shattering_03.ogg" id="12_u1opb"]
 [ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="14_diguy"]
+[ext_resource type="Texture2D" uid="uid://b2wsplq7thl6q" path="res://effects/spacerock.png" id="16_d4qvj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ldm1"]
 radius = 35.0
@@ -424,6 +425,15 @@ properties/48/replication_mode = 2
 properties/49/path = NodePath("HornSound:playing")
 properties/49/spawn = true
 properties/49/replication_mode = 2
+properties/50/path = NodePath("Meteor/SpaceRock:visible")
+properties/50/spawn = true
+properties/50/replication_mode = 2
+properties/51/path = NodePath("Meteor/SpaceRock:position")
+properties/51/spawn = true
+properties/51/replication_mode = 2
+properties/52/path = NodePath("Meteor/SpaceRock:modulate")
+properties/52/spawn = true
+properties/52/replication_mode = 2
 
 [node name="Car" type="RigidBody2D"]
 gravity_scale = 0.0
@@ -775,6 +785,12 @@ scale_amount_min = 8.0
 scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_k0skd")
 color_ramp = SubResource("Gradient_bp3qb")
+
+[node name="SpaceRock" type="Sprite2D" parent="Meteor"]
+visible = false
+scale = Vector2(10, 10)
+texture = ExtResource("16_d4qvj")
+offset = Vector2(0, -50)
 
 [node name="LostArrow" type="Polygon2D" parent="."]
 visible = false

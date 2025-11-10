@@ -338,7 +338,7 @@ func _process(delta: float) -> void:
 			if not $Meteor/CPUParticles2D.emitting:
 				$Meteor/CPUParticles2D.emitting = true
 			smoulder_speed_limiter = 0.0
-			smoulder_drag = 7.0
+			smoulder_drag = 30.0
 		elif smoulder_duration < 6000:
 			var c: float = (smoulder_duration-3000)/3000
 			for m in modulated_stuff:
@@ -892,21 +892,26 @@ func sip_coffee () -> void:
 	$Coffee/CPUParticles2D.emitting = true
 
 func space_rock () -> void:
-	#meteor_impact.emit()
-	#return
 	var shadow: TextureRect = $Meteor/Shadow
+	var rock: Sprite2D = $Meteor/SpaceRock
 	shadow.show()
+	rock.show()
 	var tween: Tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	shadow.scale = Vector2(0.1,0.1)
 	shadow.position = Vector2(-5,-5)
 	shadow.modulate = Color.hex(0x00000000)
+	rock.position = Vector2(0,-10000)
+	rock.modulate = Color.hex(0xffffff00)
 	tween.tween_property(shadow, "scale", Vector2(10.0,10.0), 2.0)
 	tween.parallel().tween_property(shadow, "position", Vector2(-500,-500),2.0)
 	tween.parallel().tween_property(shadow, "modulate", Color.hex(0xffffffaa), 2.0)
+	tween.parallel().tween_property(rock, "position", Vector2.ZERO, 2.0)
+	tween.parallel().tween_property(rock, "modulate", Color.hex(0xffffffff), 2.0)
 	$Meteor/WhooshSound.play()
 	await tween.finished
 	shadow.hide()
+	rock.hide()
 	meteor_impact.emit()
 	scream()
 
