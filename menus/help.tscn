@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://culfs1hcaohhm"]
+[gd_scene load_steps=15 format=3 uid="uid://culfs1hcaohhm"]
 
 [ext_resource type="Texture2D" uid="uid://dhkns5jdsokx5" path="res://items/beetle.png" id="1_fs3b4"]
 [ext_resource type="Script" uid="uid://cbgj37s6j3g2q" path="res://menus/help.gd" id="1_hpd5p"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dj2ehw53ucubn" path="res://menus/spacebar.png" id="5_um2h5"]
 [ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="6_shoa8"]
 [ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="12_kmtil"]
+[ext_resource type="Texture2D" uid="uid://byey8l1eg6ra8" path="res://items/midicontroller.png" id="12_yc6lo"]
 
 [node name="Help" type="Control"]
 layout_mode = 3
@@ -203,13 +204,28 @@ stretch_mode = 4
 
 [node name="MeteorText" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
 layout_mode = 2
-theme_override_font_sizes/italics_font_size = 32
 theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
 bbcode_enabled = true
 text = "Space Rock:
 Don't worry, this is just a small piece that broke off the main asteroid.
 Technically, this one [i]is[/i] called a meteor!"
 fit_content = true
+
+[node name="Midi" type="TextureRect" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("12_yc6lo")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="MidiText" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/Items/ScrollContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Midi Controller:
+Lay down some beats for your fellow racers.
+...I don't actually know what midi controllers are supposed to do."
+autowrap_mode = 3
 
 [node name="About" type="MarginContainer" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer"]
 visible = false
@@ -231,16 +247,16 @@ theme_override_constants/separation = 20
 
 [node name="Title" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/italics_font_size = 32
 theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
 bbcode_enabled = true
 text = "NASERCAR"
 fit_content = true
 
 [node name="Code" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/italics_font_size = 32
 theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
 bbcode_enabled = true
 text = "Code and Graphics by Mike
 GVH character profile pics are based on the stickers from the KO_OP discord server.
@@ -256,8 +272,8 @@ fit_content = true
 
 [node name="GVH" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/TabContainer/About/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/italics_font_size = 32
 theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
 bbcode_enabled = true
 text = "Characters and game elements from [i]Goodbye Volcano High[/i] by KO_OP
 [url]https://goodbyevolcanohigh.com/[/url]"

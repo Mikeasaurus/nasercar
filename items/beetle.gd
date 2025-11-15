@@ -8,9 +8,9 @@ var velocity: Vector2 = Vector2.ZERO
 @export var min_impulse: float = 500.0
 var active: bool = false
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+# The owner of the beetle.
+# (so we don't hit ourselves!)
+var originator: Car
 
 func set_target (car: Node2D) -> void:
 	target = car
@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if not active: return
-	if "_crash_effect" in body:
+	if "_crash_effect" in body and body != originator:
 		if "apply_impulse" in body:
 			var dv: Vector2 = velocity - body.linear_velocity
 			if dv.length() < min_impulse:

@@ -751,6 +751,9 @@ func _kersplash (liquid_type: int) -> void:
 	freeze = true
 	# Car not moveable (turns off other skidding / particle effects from friction).
 	moveable = false
+	# Remove any shield?
+	if has_shield():
+		get_node("shield").queue_free()
 	# Start showing ripple of water when car is sinking.
 	# Also fade the car into the water.
 	splash.global_rotation = 0
@@ -913,11 +916,22 @@ func space_rock () -> void:
 	shadow.hide()
 	rock.hide()
 	meteor_impact.emit()
+	if has_shield():
+		get_node("shield").queue_free()
 	scream()
 
 func smoulder () -> void:
 	effects[EffectType.SMOULDERING] = Time.get_ticks_msec()
 	$Meteor/CPUParticles2D.emitting = true
+
+# Spawn a shield around the player.
+func has_shield() -> bool:
+	return has_node("shield")
+func shields_up () -> void:
+	if has_shield(): return
+	var shield: Shield = load("res://items/shield.tscn").instantiate()
+	shield.name = "shield"
+	add_child(shield)
 
 # Try getting a CPU car unstuck from an obstacle.
 func _get_unstuck () -> void:

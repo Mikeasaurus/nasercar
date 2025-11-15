@@ -1,0 +1,96 @@
+[gd_scene load_steps=8 format=3 uid="uid://b30s3pf5awhgn"]
+
+[ext_resource type="PackedScene" uid="uid://gfkmrew65og3" path="res://items/beat.tscn" id="1_o5051"]
+[ext_resource type="Script" uid="uid://bpy4gl506m3l4" path="res://items/shield.gd" id="1_vbw0n"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="3_ovhra"]
+
+[sub_resource type="Animation" id="Animation_vvsss"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:current_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vbw0n"]
+resource_name = "spinning"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:current_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 360.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vvsss"]
+_data = {
+&"RESET": SubResource("Animation_vvsss"),
+&"spinning": SubResource("Animation_vbw0n")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qdvv7"]
+properties/0/path = NodePath(".:modulate")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:current_rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Shield" type="Node2D"]
+script = ExtResource("1_vbw0n")
+
+[node name="Beats" type="Node2D" parent="."]
+
+[node name="Beat1" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(150, 1)
+
+[node name="Beat2" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(75, 130)
+frame = 2
+
+[node name="Beat3" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(-75, 130)
+frame = 1
+
+[node name="Beat4" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(-150, 0)
+frame = 5
+
+[node name="Beat5" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(-75, -130)
+frame = 3
+
+[node name="Beat6" parent="Beats" instance=ExtResource("1_o5051")]
+position = Vector2(75, -130)
+frame = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vvsss")
+}
+autoplay = "spinning"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://gfkmrew65og3", "uid://ck4l335203jwr")
+spawn_path = NodePath("../Beats")
+
+[node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_qdvv7")
+script = ExtResource("3_ovhra")
+metadata/_custom_type_script = "uid://dx8rc3wylygum"
+
+[connection signal="child_exiting_tree" from="Beats" to="." method="_on_beats_child_exiting_tree"]

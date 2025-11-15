@@ -813,4 +813,8 @@ libraries = {
 replication_config = SubResource("SceneReplicationConfig_kxogy")
 script = ExtResource("14_diguy")
 
+[node name="BeatSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://b30s3pf5awhgn")
+spawn_path = NodePath("..")
+
 [connection signal="timeout" from="CrashSoundTimer" to="." method="_on_crash_sound_timer_timeout"]

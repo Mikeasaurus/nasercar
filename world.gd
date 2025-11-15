@@ -282,7 +282,7 @@ func _update_displayed_place (place: int) -> void:
 	await tween.finished
 
 # All available item types.
-enum ItemType {NONE,NAILPOLISH,COFFEE,METEOR,SLIME,BEETLE}
+enum ItemType {NONE,NAILPOLISH,COFFEE,METEOR,SLIME,BEETLE,MIDICONTROLLER}
 # Map the item types to the visual representations.
 @onready var item_pics: Dictionary = {
 	ItemType.NAILPOLISH: $ItemSelect/CenterContainer/ScrollContainer/VBoxContainer/NailPolish,
@@ -290,6 +290,7 @@ enum ItemType {NONE,NAILPOLISH,COFFEE,METEOR,SLIME,BEETLE}
 	ItemType.METEOR: $ItemSelect/CenterContainer/ScrollContainer/VBoxContainer/Meteor,
 	ItemType.SLIME: $ItemSelect/CenterContainer/ScrollContainer/VBoxContainer/MangoSlime,
 	ItemType.BEETLE: $ItemSelect/CenterContainer/ScrollContainer/VBoxContainer/Beetle,
+	ItemType.MIDICONTROLLER: $ItemSelect/CenterContainer/ScrollContainer/VBoxContainer/MidiController,
 }
 
 # Item block touched by car.
@@ -323,6 +324,7 @@ func _get_item(car: Car) -> void:
 	# item is arriving.
 	_current_items[car] = ItemType.NONE
 	var cars_in_front: Array[Car] = _cars_in_front_of(car)
+	var ncars: int = len(_cars())
 	# Determine which items are viable selections, and relative probability
 	# of occurrence.
 	var likelihood: Dictionary = {}
@@ -346,12 +348,14 @@ func _get_item(car: Car) -> void:
 	# Beetle has equal probability, except for leading car.
 	if len(cars_in_front) > 0:
 		likelihood[ItemType.BEETLE] = 40
+	# Midi controller is more likely for cars in middle.
+	if not car.has_shield():
+		likelihood[ItemType.MIDICONTROLLER] = (int(ncars/2) - abs(len(cars_in_front)-int(ncars/2))) * 5 + 5
 	# Pick an item from these possibilities.
 	var sample_size: int = 0
 	for n in likelihood.values():
 		sample_size += n
 	var choice: int = randi() % sample_size
-	#print ('?? ', car, ' ', likelihood, ' ', sample_size)
 	var item: ItemType
 	for item_type in likelihood.keys():
 		if choice < likelihood[item_type]:
@@ -390,7 +394,7 @@ func _item_selection_visual (item: ItemType) -> void:
 	var tween: Tween = create_tween()
 	tween.tween_interval(0.4)
 	tween.set_ease(Tween.EASE_IN)
-	tween.tween_property($ItemSelect/CenterContainer/ScrollContainer,"scroll_vertical",5*256+20,0.75)
+	tween.tween_property($ItemSelect/CenterContainer/ScrollContainer,"scroll_vertical",6*256+20,0.75)
 	await tween.finished
 	# Players with touchscreen automatically use items after a short amount of time.
 	if DisplayServer.is_touchscreen_available():
@@ -430,6 +434,8 @@ func _use_item(car: Car = null) -> void:
 		car.sip_coffee()
 	if item == ItemType.METEOR:
 		_launch_meteor(car)
+	if item == ItemType.MIDICONTROLLER:
+		car.shields_up()
 # Called from server to client, to trigger visual feedback of using the item.
 @rpc("authority","reliable","call_local")
 func _item_usage_visual (item: ItemType) -> void:
@@ -494,6 +500,7 @@ func _launch_beetle (from: Car, to: Car) -> void:
 	beetle.z_index = 10
 	beetle.global_position = from.global_position
 	beetle.velocity = from.linear_velocity
+	beetle.originator = from
 	if to != null:
 		beetle.set_target(to)
 	else:
