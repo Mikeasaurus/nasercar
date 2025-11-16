@@ -21,6 +21,9 @@ var _meteor: bool = false
 
 # Keep track of player's place in the race.
 var _place: Dictionary
+# Final place of the player(s) after the complete the race.
+# Key is player_id, value is place.
+var _final_place: Dictionary[int,int]
 # Shortcut for updating results for the stats page.
 var _final_stats: Array[ResultLine] = []
 var _finished_cars: Array[Car] = []
@@ -350,6 +353,7 @@ func _get_item(car: Car) -> void:
 		likelihood[ItemType.BEETLE] = 40
 	# Midi controller is more likely for cars in middle.
 	if not car.has_shield():
+		@warning_ignore("integer_division")
 		likelihood[ItemType.MIDICONTROLLER] = (int(ncars/2) - abs(len(cars_in_front)-int(ncars/2))) * 5 + 5
 	# Pick an item from these possibilities.
 	var sample_size: int = 0
@@ -589,6 +593,7 @@ func _finished (car: Car) -> void:
 				if participants[player_id] == car:
 					text_colour = Color.GREEN
 				_final_stats[i].set_results.rpc_id(player_id, place, car.scene_file_path, car.display_name, time, text_colour)
+				_final_place[_get_player_id(car)] = place
 	if car.type == car.CarType.PLAYER:
 		# Immediately use any item that is still held by the player.
 		_use_item(car)
@@ -641,10 +646,10 @@ func _leave_race(completed: bool = false) -> void:
 	# Unpause the tree so the main menu and other elements will function properly once we leave the race.
 	get_tree().paused = false
 	_leaving_race = false
-	# For completed single-player games, return the player's place.
+	# For completed single-player games, return the player's final place.
 	var my_id: int = multiplayer.get_unique_id()
 	if completed and my_id == 1:
-		_done.emit(_place[my_id])
+		_done.emit(_final_place[my_id])
 	# For incomplete single-player games, don't have a place to return.
 	elif not completed and my_id == 1:
 		_done.emit(-1)
