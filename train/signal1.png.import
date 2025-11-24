@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chxeh0b48xusu"
-path="res://.godot/imported/roads.png-f092bd7837082565d09c156cce7eea44.ctex"
+uid="uid://mw7k0hvv8ee1"
+path="res://.godot/imported/signal1.png-f46d825f6c08c95524d94f9d3f1fb3fd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tiles/roads.png"
-dest_files=["res://.godot/imported/roads.png-f092bd7837082565d09c156cce7eea44.ctex"]
+source_file="res://train/signal1.png"
+dest_files=["res://.godot/imported/signal1.png-f46d825f6c08c95524d94f9d3f1fb3fd.ctex"]
 
 [params]
 

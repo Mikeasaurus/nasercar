@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://wapkmtw6ob7t"]
+
+[ext_resource type="PackedScene" uid="uid://cwmakt1yu06uf" path="res://train/train_car.tscn" id="1_papne"]
+[ext_resource type="Script" uid="uid://bdj8uxab3lbnv" path="res://train/train_front.gd" id="2_35exv"]
+[ext_resource type="Texture2D" uid="uid://cl0ylvw1ee4g4" path="res://train/trainfront.png" id="2_etwn5"]
+[ext_resource type="AudioStream" uid="uid://v10mllafcbb" path="res://audio/385821__crazywashingtoniantrainnut__train-horn-s3k-2-blast.mp3" id="4_fsbmo"]
+[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="5_fsbmo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j0mwe"]
+radius = 25.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_j0mwe"]
+properties/0/path = NodePath("Front/Horn:playing")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="TrainFront" instance=ExtResource("1_papne")]
+collision_layer = 3
+collision_mask = 0
+script = ExtResource("2_35exv")
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_etwn5")
+
+[node name="Front" type="Area2D" parent="." index="3"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Front" index="0"]
+position = Vector2(-30, -1)
+shape = SubResource("CircleShape2D_j0mwe")
+
+[node name="Horn" type="AudioStreamPlayer2D" parent="Front" index="1"]
+stream = ExtResource("4_fsbmo")
+volume_db = 8.0
+
+[node name="HornSynchronizer" type="MultiplayerSynchronizer" parent="." index="5"]
+replication_config = SubResource("SceneReplicationConfig_j0mwe")
+script = ExtResource("5_fsbmo")
+metadata/_custom_type_script = "uid://dx8rc3wylygum"
+
+[connection signal="body_entered" from="Front" to="." method="_on_front_body_entered"]

@@ -414,6 +414,18 @@ License: Attribution NonCommercial 3.0
 Car Horn.mp3 by DigPro120
 [url]https://freesound.org/s/432641/[/url]
 License: Creative Commons 0
+
+Fast Freight Train Clickety-Clack over Track Joint by WeenyBeany
+[url]https://freesound.org/s/769890/[/url]
+License: Attribution 4.0
+
+Railway Crossing Warning Bell / Signal by mycompasstv
+[url]https://freesound.org/s/457125/[/url]
+License: Creative Commons 0
+
+Train Horn S3K 2 Blast.wav by CrazyWashingtonianTrainNut
+[url]https://freesound.org/s/385821/[/url]
+License: Attribution NonCommercial 3.0
 "
 fit_content = true
 
@@ -422,3 +434,4 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="FullScreenToggle" parent="." instance=ExtResource("6_shoa8")]
+layout_mode = 0

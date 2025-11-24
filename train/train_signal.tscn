@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6g5o5pr7ufnq"]
+
+[ext_resource type="Texture2D" uid="uid://cnq7sinb0yajx" path="res://train/signal0.png" id="1_uxe1y"]
+[ext_resource type="Texture2D" uid="uid://mw7k0hvv8ee1" path="res://train/signal1.png" id="2_c6yfr"]
+[ext_resource type="Texture2D" uid="uid://c057ntt4vdkak" path="res://train/signal2.png" id="3_77jtj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b1efk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_uxe1y")
+}],
+"loop": true,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_c6yfr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_77jtj")
+}],
+"loop": true,
+"name": &"on",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e0te4"]
+size = Vector2(5, 3)
+
+[node name="TrainSignal" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_b1efk")
+animation = &"off"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-0.5, 14.5)
+shape = SubResource("RectangleShape2D_e0te4")
