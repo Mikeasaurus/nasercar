@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="3_dvb64"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebihx"]
-size = Vector2(58, 28)
+size = Vector2(96, 28)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mfadf"]
 properties/0/path = NodePath(".:position")
