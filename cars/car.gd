@@ -278,7 +278,10 @@ func progress () -> float:
 	return (lap-1) + prog2
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	# Don't run this if processing is requested to be inactive.
+	if freeze: return
+
 	# Arrow pointing to player needs to stay oriented upward.
 	$Arrow.global_rotation = 0
 	$Arrow.scale = 2*Vector2(1/$Camera2D.zoom.x, 1/$Camera2D.zoom.y)
