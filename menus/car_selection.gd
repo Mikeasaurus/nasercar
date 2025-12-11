@@ -61,7 +61,9 @@ func _ready() -> void:
 	if multiplayer.get_unique_id() == 1:
 		multiplayer.peer_disconnected.connect(_player_bailed)
 
+var _panels_selectable: bool = true
 func _panel_selected (panel: CarSelectionPanel) -> void:
+	if not _panels_selectable: return
 	var panel_index: int = panel2index(panel)
 	# If this is a multiplayer game, then need to delegate car selection through the server.
 	if multiplayer.get_unique_id() != 1:
@@ -91,6 +93,7 @@ func _on_race_button_pressed() -> void:
 	# Disable any further button presses.
 	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = true
 	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
+	_panels_selectable = false
 	# If this is a single player game, send signal back to parent scene that we're ready.
 	if multiplayer.get_unique_id() == 1:
 		await _fadeout()
@@ -208,6 +211,8 @@ func _on_visibility_changed() -> void:
 			selection.unselect()
 			selection = null
 		$Headshot.sprite_frames.clear("default")
+		# Panels can be clicked.
+		_panels_selectable = true
 		# Enable "Back" button (may have been disabled in previous interaction with this scene).
 		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
 		if multiplayer.get_unique_id() != 1:
