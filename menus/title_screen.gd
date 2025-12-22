@@ -204,16 +204,34 @@ func _request_race (race_id: int, track_name: String, participants: Dictionary) 
 	var race_name: String = "race_"+str(race_id)
 	if not has_node(race_name):
 		await _race_ready
-	return get_node(race_name)
+	var race: World = get_node(race_name)
+	# If this is a client for a multiplayer race, then set up the peer connection.
+	if multiplayer.get_unique_id() != 1:
+		var connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
+		connection.session_description_created.connect( func (type: String, sdp: String) -> void:
+			#print ("CLIENT SIDE SDP CREATED")
+			connection.set_local_description(type, sdp)
+			add_client_sdp.rpc_id(1, race_name, type, sdp)
+		)
+		connection.ice_candidate_created.connect(func (media: String, index: int, name_arg: String) -> void:
+			#print ("CLIENT SIDE ICE CREATED")
+			add_client_ice.rpc_id(1, race_name, media, index, name_arg)
+		)
+		var rtc: WebRTCMultiplayerPeer = race.multiplayer.multiplayer_peer
+		rtc.add_peer(connection, 1)
+	return race
 @rpc("any_peer","call_local","reliable")
 func _server_request_race (race_id: int, track_name: String, participants: Dictionary) -> void:
 	var race_name: String = "race_"+str(race_id)
+	var race: World
 	# If this wasn't called by the host, and the host hasn't requested the race object yet, then
 	# wait until it's ready.
 	if track_name == "" and not has_node(race_name):
 		print ("Waiting for host to initiate race")
 		await _race_ready
-	if not has_node(race_name):
+	if has_node(race_name):
+		race = get_node(race_name)
+	else:
 		# Construct a list of all race participants, starting with the host.
 		var player_ids: Array[int] = [race_id]
 		for player_id in participants.keys():
@@ -226,7 +244,7 @@ func _server_request_race (race_id: int, track_name: String, participants: Dicti
 		while index in _running_races:
 			index += 1
 		# Spawn the race
-		var race: World = $RaceSpawner.spawn([index,race_id,player_ids,"res://tracks/%s.tscn"%track_name])
+		race = $RaceSpawner.spawn([index,race_id,player_ids,"res://tracks/%s.tscn"%track_name])
 		var player_names: Array[String] = []
 		for player_id in participants.keys():
 			player_names.append(participants[player_id][0])
@@ -240,6 +258,23 @@ func _server_request_race (race_id: int, track_name: String, participants: Dicti
 		# Run from server side as well (which will control the race).
 		if multiplayer.multiplayer_peer is not OfflineMultiplayerPeer:
 			race.run(participants)
+	# If this is the server for a multiplayer race, then set up the peer connection.
+	if race.multiplayer.multiplayer_peer is WebRTCMultiplayerPeer:
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
+		connection.session_description_created.connect( func (type: String, sdp: String) -> void:
+			#print ("SERVER SIDE SDP CREATED")
+			connection.set_local_description(type, sdp)
+			add_server_sdp.rpc_id(peer_id, race_name, type, sdp)
+		)
+		connection.ice_candidate_created.connect( func (media: String, index: int, name_arg: String) -> void:
+			#print ("SERVER SIDE ICE CANDIDATE CREATED")
+			add_server_ice.rpc_id(peer_id, race_name, media, index, name_arg)
+		)
+		race.multiplayer.multiplayer_peer.add_peer(connection, peer_id)
+		#print ("CREATING OFFER")
+		connection.create_offer()
+
 	# Tell client that the race is available.
 	_client_receive_race.rpc_id(multiplayer.get_remote_sender_id())
 	# Send the ready signal within this server too, in case we're waiting for the host to initialize the race.
@@ -287,6 +322,45 @@ func _spawn_race (data: Array) -> Node:
 		#race.process_mode = Node.PROCESS_MODE_DISABLED
 	# Set a consistent name for this race across all peers.
 	race.name = "race_"+str(race_id)
+
+	# If this is a local game, then we have everything we need.
+	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
+		return race
+
+	# Prepare an RTC connection for this race.
+
+	# First, use a unique MultiplayerAPI for the race (so the communication is only performed
+	# for the participating racers.
+	var multiplayer_path: NodePath = NodePath("/root/TitleScreen/"+race.name)
+	if get_tree().get_multiplayer(multiplayer_path) == multiplayer:
+		#print ("Setting independent multiplayer API for ", race.name)
+		get_tree().set_multiplayer(SceneMultiplayer.new(), multiplayer_path)
+
+	# Next, make sure a WebRTCMultiplayerPeer is created once the race is in the tree.
+	# Create in server mode for the server, and client mode for the client.
+	# (not using fully connected mesh of peers, everything will be using client/server model for simplicity).
+	if player_id == 1:
+		race.tree_entered.connect( func () -> void:
+			var rtc: WebRTCMultiplayerPeer = WebRTCMultiplayerPeer.new()
+			rtc.create_server()
+			race.multiplayer.multiplayer_peer = rtc
+			#print ("Server peer created.")
+		)
+	else:
+		race.tree_entered.connect( func () -> void:
+			var rtc: WebRTCMultiplayerPeer = WebRTCMultiplayerPeer.new()
+			# Use same unique peer id as the WebSocket connection, for consistency.
+			rtc.create_client(player_id)
+			race.multiplayer.multiplayer_peer = rtc
+			#print ("Client peer created.")
+		)
+
+	# Clean up MultiplayerAPI objects once the race is completed.
+	race.tree_exiting.connect( func () -> void:
+		#print ("Removing independent multiplayer API for ", race.name)
+		get_tree().set_multiplayer(null, race.get_path())
+	)
+
 	return race
 
 
@@ -301,3 +375,34 @@ func _on_margin_container_visibility_changed() -> void:
 		_reset_car()
 		$NaserCar.hide()
 		$NaserCar.set_deferred('process_mode',Node.PROCESS_MODE_DISABLED)
+
+
+# Use these WebSocket-backed RPC functions for mediating the creation of WebRTC connections for the multiplayer races.
+
+@rpc("any_peer","reliable")
+func add_client_sdp (race_name: String, type: String, sdp: String) -> void:
+	#print ("ADDING CLIENT SDP for ", race_name, ": ", type, " :: ", sdp)
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	var rtc: WebRTCMultiplayerPeer = get_node(race_name).multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
+	connection.set_remote_description(type, sdp)
+@rpc("any_peer","reliable")
+func add_client_ice (race_name: String, media: String, index: int, name_arg: String) -> void:
+	#print ("ADDING CLIENT ICE for ", race_name, ": ", media, " :: ", index, " :: ", name_arg)
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	var rtc: WebRTCMultiplayerPeer = get_node(race_name).multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
+	connection.add_ice_candidate(media, index, name_arg)
+
+@rpc("authority","reliable")
+func add_server_sdp (race_name: String, type: String, sdp: String) -> void:
+	#print ("ADDING SERVER SDP for ", race_name, ": ", type, " :: ", sdp)
+	var rtc: WebRTCMultiplayerPeer = get_node(race_name).multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
+	connection.set_remote_description(type, sdp)
+@rpc("authority","reliable")
+func add_server_ice (race_name: String, media: String, index: int, name_arg: String) -> void:
+	#print ("ADDING SERVER ICE for ", race_name, ": ", media, " :: ", index, " :: ", name_arg)
+	var rtc: WebRTCMultiplayerPeer = get_node(race_name).multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
+	connection.add_ice_candidate(media, index, name_arg)

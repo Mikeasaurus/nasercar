@@ -32,3 +32,11 @@ a good number after some tests.
 
 
 Remember to uncheck "DEBUG" when exporting both client / server parts.
+
+Build a client .exe, upload a new release to GitHub, and update download link
+on title screen (if a download link is implemented).
+
+Also, for server (and standalone client .exe), need to add WebRTC extension.
+https://github.com/godotengine/webrtc-native/releases
+
+This is not needed for web client.
