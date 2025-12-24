@@ -91,8 +91,8 @@ color = Color(0.996078, 0.580392, 0.407843, 1)
 [node name="Title" type="RichTextLabel" parent="MarginContainer/CenterContainer/VBoxContainer/Title"]
 custom_minimum_size = Vector2(1200, 0)
 layout_mode = 2
-theme_override_fonts/italics_font = ExtResource("1_ygr87")
 theme_override_fonts/bold_italics_font = ExtResource("2_4f3c5")
+theme_override_fonts/italics_font = ExtResource("1_ygr87")
 theme_override_font_sizes/bold_italics_font_size = 96
 theme_override_font_sizes/italics_font_size = 240
 bbcode_enabled = true
@@ -145,6 +145,7 @@ layout_mode = 2
 color = Color(1, 1, 1, 0)
 
 [node name="FullScreenToggle" parent="." instance=ExtResource("5_w0neb")]
+layout_mode = 0
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
