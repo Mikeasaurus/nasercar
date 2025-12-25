@@ -277,6 +277,11 @@ func progress () -> float:
 		lap += 1
 	return (lap-1) + prog2
 
+# Prevent another physics frame from running if the previous one hasn't ended yet.
+# Just in case this is a problem on lower-end hardware that can't keep up with the
+# expected physics framerate.
+var _running_physics_process: bool = false
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	# Don't run this if processing is requested to be inactive.
@@ -312,6 +317,12 @@ func _physics_process(delta: float) -> void:
 
 	# The rest of this code is for server-side processing.
 	if type == CarType.REMOTE: return
+
+	# Detect if the previous frame hasn't ended yet.
+	# If so, then drop this frame.
+	if _running_physics_process:
+		return
+	_running_physics_process = true
 
 	#######################################################
 	# Check if a lap was just completed.
@@ -700,6 +711,8 @@ func _physics_process(delta: float) -> void:
 		$EngineSound.pitch_scale = 0.5
 	else:
 		$EngineSound.pitch_scale = 1 + fastest_wheel_speed / max_speed
+
+	_running_physics_process = false
 
 func _on_body_entered(_body: Node) -> void:
 	if _crashing: return  # Only play sound once during a crashing period.
