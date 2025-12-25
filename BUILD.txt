@@ -36,3 +36,15 @@ Also, for server (and standalone client .exe), need to add WebRTC extension.
 https://github.com/godotengine/webrtc-native/releases
 
 This is not needed for web client.
+
+NOTE: Don't use version 1.1.0 of the WebRTC extension... it doesn't seem to
+work with web browsers.  It gives the following error message on the server
+when a web client tries to connect:
+
+  ERROR: rtc::impl::DtlsTransport::doRecv@597: DTLS recv: Handshake failed: SSL - The requested feature is not available
+     at: LogCallback (src/WebRTCLibPeerConnection.cpp:51)
+  ERROR: rtc::impl::DtlsTransport::doRecv@605: DTLS handshake failed
+     at: LogCallback (src/WebRTCLibPeerConnection.cpp:51)
+
+I think this has something to do with the switch from OpenSSL to mbedTLS.
+Using version 1.0.9 (which uses OpenSSL) seems to work fine.
