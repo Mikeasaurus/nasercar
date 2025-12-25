@@ -276,7 +276,7 @@ func _start_race (participants_in: Dictionary) -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Update the places of all the cars.
 	# Determined on the server side.
 	if multiplayer.get_unique_id() == 1:

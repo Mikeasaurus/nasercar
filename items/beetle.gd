@@ -35,7 +35,7 @@ func buzz_off () -> void:
 	queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if target == null: return
 	var direction: Vector2 = target.global_position - global_position
 	global_rotation = direction.angle() - PI/2

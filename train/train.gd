@@ -37,7 +37,7 @@ func _ready() -> void:
 		add_child.call_deferred(t,true)
 		traincars.append(t)
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var old_angles: Array[float]
 	for i in range(num_cars):
 		old_angles.append(traincars[i].global_rotation)

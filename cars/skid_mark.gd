@@ -11,7 +11,7 @@ func _ready() -> void:
 	if multiplayer.get_unique_id() == 1:
 		$CleanupTimer.start()
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if _cleanup:
 		if get_point_count() > 0:
 			remove_point(0)

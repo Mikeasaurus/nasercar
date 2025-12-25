@@ -11,7 +11,7 @@ func _ready() -> void:
 	tween.tween_property(self,"modulate",Color.WHITE,0.2)
 	await tween.finished
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	global_rotation_degrees = current_rotation
 
 # Clean up after all beats have been used.
