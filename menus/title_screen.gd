@@ -30,9 +30,8 @@ func _make_server () -> void:
 	if "--local" in OS.get_cmdline_user_args():
 		peer.create_server(1157)
 	else:
-		#NOTE: remote server should be run with the command-line options --headless --max-fps=45
-		# Need to run without a display, and also limit the fps to avoid excessive
-		# jitter when syncing game state via Websocket/TCP.
+		#NOTE: remote server should be run with the command-line option --headless
+		# (Need to run without a display)
 		var key := load("res://cert/privkey.key")
 		var cert := load("res://cert/fullchain.crt")
 		var tls_options := TLSOptions.server(key,cert)

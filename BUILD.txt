@@ -23,13 +23,9 @@ Godot has to provide its own keyboard.
 Server:
 
 Multiplayer server is exported as Linux (runnable).
-When launching the server, use options --headless --max-fps=45
+When launching the server, use option --headless
 
-This avoids initializing a display (which may not even exist on a VPS!), and
-tones down the FPS.  Too many FPS, and the Websocket communication gets all
-wonky.  However, too few FPS makes it too choppy/slow to play.  45 seems like
-a good number after some tests.
-
+This avoids initializing a display (which may not even exist on a VPS!)
 
 Remember to uncheck "DEBUG" when exporting both client / server parts.
 
