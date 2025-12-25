@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://damtrqvf3xtsu"]
+[gd_scene load_steps=6 format=3 uid="uid://damtrqvf3xtsu"]
 
 [ext_resource type="Script" uid="uid://dqbtw2h2ycdc" path="res://train/train_signals.gd" id="1_5ra02"]
 [ext_resource type="PackedScene" uid="uid://b6g5o5pr7ufnq" path="res://train/train_signal.tscn" id="1_ukcix"]
 [ext_resource type="AudioStream" uid="uid://dcr28wtu0dbfm" path="res://audio/457125__mycompasstv__railway-crossing-warning-bell-signal.mp3" id="3_632dx"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="4_fbva5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5ra02"]
 radius = 500.0
@@ -48,8 +47,6 @@ shape = SubResource("CircleShape2D_5ra02")
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_h2l3k")
-script = ExtResource("4_fbva5")
-metadata/_custom_type_script = "uid://dx8rc3wylygum"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

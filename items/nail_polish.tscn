@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7q1tvemcohtp"]
+[gd_scene load_steps=6 format=3 uid="uid://b7q1tvemcohtp"]
 
 [ext_resource type="Script" uid="uid://083t38jfvmsn" path="res://items/nail_polish.gd" id="1_aelh3"]
 [ext_resource type="Texture2D" uid="uid://cjeauvo1gve1k" path="res://items/nailpolish1.png" id="1_udlxe"]
 [ext_resource type="AudioStream" uid="uid://75frg68nssw" path="res://audio/630484__jimbo555__bottle-squirt.wav" id="2_8l4tn"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="4_wjhl0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jmer5"]
 radius = 26.0192
@@ -33,7 +32,6 @@ autoplay = true
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6uhd4")
-script = ExtResource("4_wjhl0")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

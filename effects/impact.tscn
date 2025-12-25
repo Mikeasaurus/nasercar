@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://c1p70okfvp84r"]
+[gd_scene load_steps=5 format=3 uid="uid://c1p70okfvp84r"]
 
 [ext_resource type="AudioStream" uid="uid://dena5wyycykqh" path="res://audio/188767__vonz__thunder-krakow-poland-2005.wav" id="1_eobys"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="2_qijfx"]
 
 [sub_resource type="Gradient" id="Gradient_8sru3"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -54,4 +53,3 @@ max_distance = 10000.0
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_t7yru")
-script = ExtResource("2_qijfx")

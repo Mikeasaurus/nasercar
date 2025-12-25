@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwmakt1yu06uf"]
+[gd_scene load_steps=5 format=3 uid="uid://cwmakt1yu06uf"]
 
 [ext_resource type="Texture2D" uid="uid://bg2thn644j8xl" path="res://train/traincar.png" id="1_fwggs"]
 [ext_resource type="AudioStream" uid="uid://u6nmww06mtsj" path="res://audio/769890__weenybeany__fast-freight-train-clickety-clack-over-track-joint.mp3" id="2_apqtr"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="3_dvb64"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebihx"]
 size = Vector2(96, 28)
@@ -32,5 +31,3 @@ autoplay = true
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_mfadf")
-script = ExtResource("3_dvb64")
-metadata/_custom_type_script = "uid://dx8rc3wylygum"

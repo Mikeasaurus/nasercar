@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b4tklj1nsft7a"]
+[gd_scene load_steps=27 format=3 uid="uid://b4tklj1nsft7a"]
 
 [ext_resource type="Script" uid="uid://biv1bchek2mp7" path="res://world.gd" id="1_5oo6t"]
 [ext_resource type="PackedScene" uid="uid://cws2bh67ogk0f" path="res://race-interface/map_overlay.tscn" id="2_26xuy"]
@@ -21,7 +21,6 @@
 [ext_resource type="AudioStream" uid="uid://yggwxfin8it2" path="res://audio/352402__noahpardo__npx-throat-gathering-spit-2.wav" id="28_iaess"]
 [ext_resource type="AudioStream" uid="uid://ck8qxnm7h80pv" path="res://audio/495118__nebulasnails__wet-splat-1.mp3" id="29_xj85u"]
 [ext_resource type="PackedScene" uid="uid://dscelbyqu4ok3" path="res://menus/pause_menu.tscn" id="30_kkwd5"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="31_2r05m"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_krpt8"]
 color = Color(0.466667, 0.466667, 0.466667, 1)
@@ -447,7 +446,6 @@ visible = false
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pcovh")
-script = ExtResource("31_2r05m")
 
 [node name="BeetleSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://cxnaar8r01bmv")

@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b30s3pf5awhgn"]
+[gd_scene load_steps=7 format=3 uid="uid://b30s3pf5awhgn"]
 
 [ext_resource type="PackedScene" uid="uid://gfkmrew65og3" path="res://items/beat.tscn" id="1_o5051"]
 [ext_resource type="Script" uid="uid://bpy4gl506m3l4" path="res://items/shield.gd" id="1_vbw0n"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="3_ovhra"]
 
 [sub_resource type="Animation" id="Animation_vvsss"]
 length = 0.001
@@ -90,7 +89,5 @@ spawn_path = NodePath("../Beats")
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_qdvv7")
-script = ExtResource("3_ovhra")
-metadata/_custom_type_script = "uid://dx8rc3wylygum"
 
 [connection signal="child_exiting_tree" from="Beats" to="." method="_on_beats_child_exiting_tree"]

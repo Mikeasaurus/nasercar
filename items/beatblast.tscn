@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ck4l335203jwr"]
+[gd_scene load_steps=9 format=3 uid="uid://ck4l335203jwr"]
 
 [ext_resource type="Script" uid="uid://d4bgicq8kvebi" path="res://items/beatblast.gd" id="1_bsyyy"]
 [ext_resource type="Texture2D" uid="uid://bu20cqaaj8lw5" path="res://items/blast2.png" id="2_rgqda"]
 [ext_resource type="Texture2D" uid="uid://d5kq4afiu4jc" path="res://items/blast1.png" id="3_7ktcl"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="4_244re"]
 
 [sub_resource type="Gradient" id="Gradient_uliqy"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -214,7 +213,5 @@ vertical_alignment = 1
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_y0crq")
-script = ExtResource("4_244re")
-metadata/_custom_type_script = "uid://dx8rc3wylygum"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

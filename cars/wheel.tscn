@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dux0gd0slf1l5"]
+[gd_scene load_steps=5 format=3 uid="uid://dux0gd0slf1l5"]
 
 [ext_resource type="Texture2D" uid="uid://da341swyulgv7" path="res://cars/wheel.png" id="2_dld2u"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="2_mksc1"]
 
 [sub_resource type="Curve" id="Curve_on00f"]
 _data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(1, 500), 0.0, 0.0, 0, 0]
@@ -73,4 +72,3 @@ color_ramp = SubResource("Gradient_ki2ey")
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_jmgio")
-script = ExtResource("2_mksc1")

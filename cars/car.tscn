@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://xkg3ucnitsra"]
+[gd_scene load_steps=45 format=3 uid="uid://xkg3ucnitsra"]
 
 [ext_resource type="PackedScene" uid="uid://dux0gd0slf1l5" path="res://cars/wheel.tscn" id="1_41m3k"]
 [ext_resource type="Script" uid="uid://coq2gttv7f4qw" path="res://cars/car.gd" id="1_88aey"]
@@ -15,7 +15,6 @@
 [ext_resource type="AudioStream" uid="uid://88hgpp0mmg15" path="res://audio/348645__redafs__slurping-sipping-and-gulp-4.mp3" id="11_myl1q"]
 [ext_resource type="AudioStream" uid="uid://cgnsq3fqkf7fo" path="res://audio/167563__benboncan__jet_whoosh.wav" id="12_petsi"]
 [ext_resource type="AudioStream" uid="uid://cin7d6iutcrbn" path="res://audio/203373__c_rogers__glass-shattering_03.ogg" id="12_u1opb"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="14_diguy"]
 [ext_resource type="Texture2D" uid="uid://b2wsplq7thl6q" path="res://effects/spacerock.png" id="16_d4qvj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ldm1"]
@@ -811,7 +810,6 @@ libraries = {
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_kxogy")
-script = ExtResource("14_diguy")
 
 [node name="BeatSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://b30s3pf5awhgn")

@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxnaar8r01bmv"]
+[gd_scene load_steps=8 format=3 uid="uid://cxnaar8r01bmv"]
 
 [ext_resource type="Texture2D" uid="uid://rlsdrl53homd" path="res://items/beetle1.png" id="1_17cmk"]
 [ext_resource type="Script" uid="uid://es3bg6ok2rnv" path="res://items/beetle.gd" id="1_pajmo"]
 [ext_resource type="Texture2D" uid="uid://bbcfvwa73cxg4" path="res://items/beetle2.png" id="2_bvuwg"]
 [ext_resource type="AudioStream" uid="uid://2nb6tycovwnp" path="res://audio/650750__tedoo__bee-in-a-mug.mp3" id="4_545dp"]
-[ext_resource type="Script" uid="uid://dx8rc3wylygum" path="res://internal/race_synchronizer.gd" id="5_wa5nt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3dxge"]
 animations = [{
@@ -68,6 +67,5 @@ position = Vector2(0, 300)
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3vec0")
-script = ExtResource("5_wa5nt")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
