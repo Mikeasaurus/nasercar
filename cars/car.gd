@@ -767,6 +767,9 @@ func _kersplash (liquid_type: int) -> void:
 	freeze = true
 	# Car not moveable (turns off other skidding / particle effects from friction).
 	moveable = false
+	for wheel in $Wheels.get_children():
+		wheel.get_node("Particles1").emitting = false
+		wheel.get_node("Particles2").emitting = false
 	# Remove any shield?
 	if has_shield():
 		get_node("shield").queue_free()
