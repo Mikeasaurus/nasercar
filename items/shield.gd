@@ -13,6 +13,8 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	global_rotation_degrees = current_rotation
+	for beat in $Beats.get_children():
+		beat.global_rotation = 0
 
 # Clean up after all beats have been used.
 func _on_beats_child_exiting_tree(_node: Node) -> void:
