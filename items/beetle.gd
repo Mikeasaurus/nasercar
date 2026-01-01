@@ -1,12 +1,15 @@
 extends Area2D
 
 var target: Node2D = null
-var velocity: Vector2 = Vector2.ZERO
+@export var velocity: Vector2 = Vector2.ZERO
 @export var acceleration: float = 1000.0
 @export var dampen: float = 1000.0
 @export var max_speed: float = 2000.0
 @export var min_impulse: float = 500.0
 var active: bool = false
+
+## For synchronizing with multiplayer server.
+@export var syncing: bool
 
 # The owner of the beetle.
 # (so we don't hit ourselves!)
@@ -34,21 +37,33 @@ func buzz_off () -> void:
 	await get_tree().create_timer(10.0, false).timeout
 	queue_free()
 
+func _ready() -> void:
+	if multiplayer.multiplayer_peer is WebRTCMultiplayerPeer and multiplayer.get_unique_id() == 1:
+		syncing = true
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	if target == null: return
-	var direction: Vector2 = target.global_position - global_position
-	global_rotation = direction.angle() - PI/2
-	var new_velocity: Vector2 = velocity + delta*acceleration*direction.normalized()# - delta*dampen*velocity.normalized()
-	# Limit amount of strafing around the target.
-	var strafing_direction: Vector2 = Vector2.from_angle(global_rotation)
-	var strafing_speed: float = new_velocity.dot(strafing_direction)
-	if strafing_speed > delta*dampen:
-		new_velocity -= delta*dampen*strafing_direction
-	elif strafing_speed < -delta*dampen:
-		new_velocity += delta*dampen*strafing_direction
-	new_velocity = new_velocity.limit_length(max_speed)
-	velocity = new_velocity
+	# Check if syncing from server.
+	# In that case, don't do any further physics calculations for this frame.
+	if multiplayer.get_unique_id() != 1 and syncing:
+		syncing = false
+		# Let server decide position / rotation for this frame.
+		return
+	# Attack the target if this is a server / single player instance.
+	# Multiplayer clients will just get physics updates from the server (no direct targetting).
+	if multiplayer.get_unique_id() == 1 and target != null:
+		var direction: Vector2 = target.global_position - global_position
+		global_rotation = direction.angle() - PI/2
+		var new_velocity: Vector2 = velocity + delta*acceleration*direction.normalized()# - delta*dampen*velocity.normalized()
+		# Limit amount of strafing around the target.
+		var strafing_direction: Vector2 = Vector2.from_angle(global_rotation)
+		var strafing_speed: float = new_velocity.dot(strafing_direction)
+		if strafing_speed > delta*dampen:
+			new_velocity -= delta*dampen*strafing_direction
+		elif strafing_speed < -delta*dampen:
+			new_velocity += delta*dampen*strafing_direction
+		new_velocity = new_velocity.limit_length(max_speed)
+		velocity = new_velocity
 	global_position += velocity * delta
 
 
