@@ -29,6 +29,14 @@ class_name Car
 ## How fast the wheels can turn (degrees/sec)
 @export var wheel_turn_speed: float = 120.0
 
+# For synchronizing with server.
+@export var sync_position: Vector2
+@export var sync_linear_velocity: Vector2
+@export var sync_rotation: float
+@export var sync_angular_velocity: float
+@export var sync_time: int
+var last_sync_time: int
+
 ## Emit signal when an item block is touched.
 signal itemblock
 func get_itemblock () -> void:
@@ -277,8 +285,34 @@ func progress () -> float:
 		lap += 1
 	return (lap-1) + prog2
 
+# Receive syncrhonized data from the server (when in multiplayer game).
+# Need to update the properties from _integrate_forces, so that the physics doesn't
+# freak out about velocity / position suddenly changing.
+func _integrate_forces(_state: PhysicsDirectBodyState2D) -> void:
+	sync_from_server()
+func sync_from_server () -> void:
+	if multiplayer.multiplayer_peer is WebRTCMultiplayerPeer and multiplayer.get_unique_id() != 1:
+		if sync_time > last_sync_time:
+			position = sync_position
+			linear_velocity = sync_linear_velocity
+			rotation = sync_rotation
+			angular_velocity = sync_angular_velocity
+			last_sync_time = sync_time
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	# Send synchronized data from server (when in multiplayer game).
+	if multiplayer.multiplayer_peer is WebRTCMultiplayerPeer:
+		if multiplayer.get_unique_id() == 1:
+			sync_position = position
+			sync_linear_velocity = linear_velocity
+			sync_rotation = rotation
+			sync_angular_velocity = angular_velocity
+			sync_time = Time.get_ticks_msec()
+		else:
+			# Force _integrate_forces to always run (so we can sync from server).
+			apply_central_impulse(Vector2.ZERO)
+
 	# Don't run this if processing is requested to be inactive.
 	if freeze: return
 
