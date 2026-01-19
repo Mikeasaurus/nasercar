@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://nvfby80br4pn"]
+[gd_scene load_steps=12 format=3 uid="uid://nvfby80br4pn"]
 
 [ext_resource type="Script" uid="uid://bmr3hkjq2ly7a" path="res://menus/title_screen.gd" id="1_26oih"]
 [ext_resource type="FontFile" uid="uid://ble5tl2cuo0pm" path="res://fonts/Hauser Italic.otf" id="1_ygr87"]
@@ -8,10 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://bx45dedd8jvb2" path="res://cars/naser_car.tscn" id="5_fxytf"]
 [ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="5_w0neb"]
 [ext_resource type="PackedScene" uid="uid://culfs1hcaohhm" path="res://menus/help.tscn" id="7_31u7g"]
-[ext_resource type="PackedScene" uid="uid://0dummt6q0fyv" path="res://menus/car_selection.tscn" id="8_82lv5"]
-[ext_resource type="PackedScene" uid="uid://d4fjxuie6wstg" path="res://menus/track_selection.tscn" id="8_dbvjn"]
+[ext_resource type="PackedScene" uid="uid://dtli5vtqsgp8m" path="res://single_player_game.tscn" id="8_ctf6r"]
 [ext_resource type="PackedScene" uid="uid://dnd8afldnrcld" path="res://menus/multiplayer.tscn" id="9_6v5ik"]
-[ext_resource type="PackedScene" uid="uid://bkswkyttwn7xp" path="res://menus/naomi.tscn" id="9_lriup"]
 
 [sub_resource type="Curve2D" id="Curve2D_uem21"]
 _data = {
@@ -172,7 +170,7 @@ curve = SubResource("Curve2D_uem21")
 wait_time = 10.0
 one_shot = true
 
-[node name="Help" parent="." instance=ExtResource("7_31u7g")]
+[node name="SinglePlayer" parent="." instance=ExtResource("8_ctf6r")]
 visible = false
 layout_mode = 1
 
@@ -180,24 +178,9 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="TrackSelection" parent="." instance=ExtResource("8_dbvjn")]
+[node name="Help" parent="." instance=ExtResource("7_31u7g")]
 visible = false
 layout_mode = 1
-
-[node name="CarSelection" parent="." instance=ExtResource("8_82lv5")]
-visible = false
-layout_mode = 1
-
-[node name="Naomi" parent="." instance=ExtResource("9_lriup")]
-process_mode = 4
-visible = false
-layout_mode = 1
-
-[node name="RaceSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("..")
-
-[node name="CarSelectionMenuSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("..")
 
 [connection signal="visibility_changed" from="MarginContainer" to="." method="_on_margin_container_visibility_changed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SinglePlayer" to="." method="_on_single_player_pressed"]

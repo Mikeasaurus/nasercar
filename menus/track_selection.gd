@@ -9,10 +9,10 @@ var selected_track: int
 # (either when a track is chosen or the user cancels).
 signal _done (int)
 
-func run() -> String:
+func run(manager_id: int) -> String:
 	show()
 	var track_index: int = await _done
-	#hide()  # Will be hidden later by title screen.
+	hide()
 	if track_index >= 0:
 		return tracks[track_index]
 	else:

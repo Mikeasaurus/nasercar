@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://cinhmlqtlnopv"]
+
+[ext_resource type="Script" uid="uid://dd6tv4dhcdwq6" path="res://game.gd" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://d4fjxuie6wstg" path="res://menus/track_selection.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://0dummt6q0fyv" path="res://menus/car_selection.tscn" id="3_fc0e3"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_80nbo")
+
+[node name="TrackSelection" parent="." instance=ExtResource("2_feb5d")]
+visible = false
+layout_mode = 1
+
+[node name="CarSelection" parent="." instance=ExtResource("3_fc0e3")]
+visible = false
+layout_mode = 1
+
+[node name="RaceSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtli5vtqsgp8m"]
+
+[ext_resource type="PackedScene" uid="uid://cinhmlqtlnopv" path="res://game.tscn" id="1_bk4of"]
+[ext_resource type="Script" uid="uid://p0dvio3j6a4n" path="res://single_player_game.gd" id="2_24lli"]
+[ext_resource type="PackedScene" uid="uid://bkswkyttwn7xp" path="res://menus/naomi.tscn" id="2_kyyhl"]
+
+[node name="SinglePlayerGame" instance=ExtResource("1_bk4of")]
+script = ExtResource("2_24lli")
+locked_cars = Array[String](["Naomi"])
+
+[node name="Naomi" parent="." index="2" instance=ExtResource("2_kyyhl")]
+visible = false
+layout_mode = 1

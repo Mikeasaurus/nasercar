@@ -4,9 +4,8 @@ class_name CarSelection
 
 var selection: CarSelectionPanel = null
 
-# The race id.
-# Corresponds to the player id who initiated the race.
-var race_id: int
+# The id  of the player who initiated the race.
+var manager_id: int
 
 # The handle of this player.
 var own_handle: String = "Player"
@@ -24,11 +23,12 @@ signal _done (Dictionary)
 
 # This is called by the parent menu to wait for a car to be selected.
 # Returns the participants for the race.
-func run (handle: String) -> Dictionary:
+func run (manager: int, handle: String) -> Dictionary:
+	manager_id = manager
 	own_handle = handle
 	show()
 	var status: Dictionary = await _done
-	# NOTE: Will be freed once race is available, to avoid a brief period of no menus visible while waiting for next screen to be shown.
+	hide()
 	return status
 
 # Initialize the menu (from server / local instance).
@@ -145,7 +145,7 @@ func _try_selecting_car (panel_index: int, handle: String) -> void:
 	if old_car_name != "":
 		_update_panel.rpc(name2index(old_car_name),false,-1,"")
 	# If this player is also the host, then they can join the race whenever they're ready.
-	if player_id == race_id:
+	if player_id == manager_id:
 		_enable_race_button.rpc_id(player_id)
 		_info.rpc_id(player_id,"You can wait for others to join, or press \"RACE!\" when you're ready to start.")
 	else:
@@ -206,15 +206,22 @@ func _on_visibility_changed() -> void:
 	if visible:
 		# If this was faded out, then bring it back.
 		modulate = Color.WHITE
+		# Enable "Back" button (may have been disabled in previous interaction with this scene).
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
+		# Could start next race with previously selected character (at least for single player game).
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
+		# Panels can be clicked.
+		_panels_selectable = true
+	# The rest of this is for multiplayer games.
+	if multiplayer == null: return  # Not in tree yet?
+	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer: return
+	if visible:
 		# Clear any previously selected car (it's not actually selected anymore).
 		if selection != null:
 			selection.unselect()
 			selection = null
 		$Headshot.sprite_frames.clear("default")
-		# Panels can be clicked.
-		_panels_selectable = true
-		# Enable "Back" button (may have been disabled in previous interaction with this scene).
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
+		$Label.text = ""
 		if multiplayer.get_unique_id() != 1:
 			# Ask server about which cars are already taken and which ones are available.
 			_sync_panels.rpc_id(1)
@@ -235,7 +242,7 @@ func _update_headshot (panel: CarSelectionPanel) -> void:
 # This is called if a player has disconnected from the server.
 func _player_bailed (player_id: int) -> void:
 	# If this player was hosting the race, then bail on the whole race.
-	if player_id == race_id:
+	if player_id == manager_id:
 		_race_bailed()
 		return
 	# Otherwise, just clear out the player and free any selected kart.

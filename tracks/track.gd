@@ -13,7 +13,7 @@ class_name Track
 
 # Finalize some setup, such as item block interactions.
 # Only called on the server instance, or for local game.
-func setup (participants: Dictionary) -> void:
+func setup () -> void:
 	# Force the TileMapLayer to instantiate its scenes, because normally this is deferred and we can't
 	# see the sprites from this _ready() function.
 	var items: TileMapLayer = get_node("TilesAboveCars/Items")
@@ -24,9 +24,3 @@ func setup (participants: Dictionary) -> void:
 		# Copied this solution from SlimeTime, where I was having the same problem.
 		for c in items.get_children():
 			c.name = c.scene_file_path.split('/')[-1].split('.')[0]+"_"+str(c.position.x)+"_"+str(c.position.y)
-
-	# Update set of peers for item blocks.
-	# They don't use normal synchronizers, so need to explicitly set this up.
-	if items != null:
-		for c in items.get_children():
-			c.peers = participants.keys()
