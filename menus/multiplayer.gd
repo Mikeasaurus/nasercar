@@ -62,13 +62,13 @@ func _server_request_new_game () -> void:
 func _spawn_game (index: int, manager_id: int) -> void:
 	var game: Game = load("res://game.tscn").instantiate()
 	game.name = "game_"+str(index)
-	game.rtc_id = multiplayer.get_unique_id()
-	#TODO: connect signals for communicating SDP / ICE info
 	# Launch the multiplayer game.
 	add_child(game)
 	print ('?? ', game)
-	await game.ready  # Wait until game is fully defined in the tree.
+	#await game.ready  # Wait until game is fully defined in the tree.
+	print ("RUN")
 	await game.run(index, manager_id, _handle.text)
+	print ("DONE")
 	remove_child(game)
 
 # Update list of races available.
@@ -113,35 +113,3 @@ func _spawn_race_entry (id: int):
 	)
 	entry.name = str(id)
 	return entry
-
-
-
-# Use these WebSocket-backed RPC functions for mediating the creation of WebRTC connections for the multiplayer races.
-
-@rpc("any_peer","reliable")
-func add_client_sdp (game_name: String, type: String, sdp: String) -> void:
-	#print ("ADDING CLIENT SDP for ", game_name, ": ", type, " :: ", sdp)
-	var peer_id: int = multiplayer.get_remote_sender_id()
-	var rtc: WebRTCMultiplayerPeer = get_node(game_name).multiplayer.multiplayer_peer
-	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
-	connection.set_remote_description(type, sdp)
-@rpc("any_peer","reliable")
-func add_client_ice (game_name: String, media: String, index: int, name_arg: String) -> void:
-	#print ("ADDING CLIENT ICE for ", game_name, ": ", media, " :: ", index, " :: ", name_arg)
-	var peer_id: int = multiplayer.get_remote_sender_id()
-	var rtc: WebRTCMultiplayerPeer = get_node(game_name).multiplayer.multiplayer_peer
-	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
-	connection.add_ice_candidate(media, index, name_arg)
-
-@rpc("authority","reliable")
-func add_server_sdp (game_name: String, type: String, sdp: String) -> void:
-	#print ("ADDING SERVER SDP for ", game_name, ": ", type, " :: ", sdp)
-	var rtc: WebRTCMultiplayerPeer = get_node(game_name).multiplayer.multiplayer_peer
-	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
-	connection.set_remote_description(type, sdp)
-@rpc("authority","reliable")
-func add_server_ice (game_name: String, media: String, index: int, name_arg: String) -> void:
-	#print ("ADDING SERVER ICE for ", game_name, ": ", media, " :: ", index, " :: ", name_arg)
-	var rtc: WebRTCMultiplayerPeer = get_node(game_name).multiplayer.multiplayer_peer
-	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
-	connection.add_ice_candidate(media, index, name_arg)

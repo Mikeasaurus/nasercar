@@ -12,12 +12,12 @@ var _websocket_side: Node
 
 # This is called when the bridge has entered a tree.
 func _enter_tree() -> void:
-	if debug: print (\"Will use WebRTC for \", get_path(), \" for multiplayer.\")
-	get_tree().set_multiplayer(SceneMultiplayer.new(), get_path())
-	# Move signalling node into parent class, so it can continue to use WebSocket.
+	if debug: print (\"Will use WebRTC for multiplayer on \", get_parent().get_path())
+	get_tree().set_multiplayer(SceneMultiplayer.new(), get_parent().get_path())
+	# Move signalling node into grandparent class, so it can continue to use WebSocket.
 	_websocket_side = $Signal
 	_websocket_side._webrtc_side = self
-	_websocket_side.call_deferred(\"reparent\",get_parent())
+	_websocket_side.call_deferred(\"reparent\",get_parent().get_parent())
 
 func _exit_tree() -> void:
 	if debug: print (\"Cleaning up WebRTC for \", get_path())
