@@ -1,0 +1,166 @@
+[gd_scene load_steps=3 format=3 uid="uid://cguqbtworp0s"]
+
+[sub_resource type="GDScript" id="GDScript_4ubst"]
+script/source = "# Bridge to go from WebSocket to WebRTC (in client/server mode).
+extends Node
+
+## Print debug information to the console.
+@export var debug: bool = false
+
+# Connection between WebRTC and WebSocket versions of this scene.
+var _websocket_side: Node
+
+# This is called when the bridge has entered a tree.
+func _enter_tree() -> void:
+	if debug: print (\"Will use WebRTC for \", get_path(), \" for multiplayer.\")
+	get_tree().set_multiplayer(SceneMultiplayer.new(), get_path())
+	# Move signalling node into parent class, so it can continue to use WebSocket.
+	_websocket_side = $Signal
+	_websocket_side._webrtc_side = self
+	_websocket_side.call_deferred(\"reparent\",get_parent())
+
+func _exit_tree() -> void:
+	if debug: print (\"Cleaning up WebRTC for \", get_path())
+	get_tree().set_multiplayer(null, get_path())
+	# Need to clean up signalling node explicitly, since it's not a child of this node anymore.
+	_websocket_side.queue_free()
+
+func _ready() -> void:
+	# Auto-start WebRTC if WebSocket is already available.
+	await _websocket_side.tree_entered  # Wait until the Signal node is fully reparented.
+	if _websocket_side.multiplayer.multiplayer_peer is WebSocketMultiplayerPeer:
+		if debug: print (\"WebSocket already available, auto-starting WebRTC.\")
+		start()
+	else:
+		if debug: print (\"Waiting for WebSocket activity before starting WebRTC\")
+		_websocket_side.multiplayer.peer_connected.connect(_websocket_peer_connected)
+
+func _websocket_peer_connected (_peer_id: int) -> void:
+	if debug: print (\"WebSocket activity detected.  Starting WebRTC\")
+	start()
+	# Don't need to listen for WebSocket activity anymore.
+	_websocket_side.multiplayer.peer_connected.disconnect(_websocket_peer_connected)
+
+func start() -> void:
+	# Need to have a WebSocketMultiplayerPeer already set up to utilize a WebRTC connection.
+	if _websocket_side.multiplayer.multiplayer_peer is not WebSocketMultiplayerPeer:
+		if debug: print (\"WebSocket peer not defined (currently using \"+multiplayer.multiplayer_peer.get_class()+\")\")
+		if debug: print (\"Can't set up WebRTC.\")
+		return
+	if _websocket_side.multiplayer.multiplayer_peer is WebRTCMultiplayerPeer:
+		if debug: print (\"WebRTC already set up, nothing to do.\")
+		return
+	# Next, make sure a WebRTCMultiplayerPeer is created.
+	# (not using fully connected mesh of peers, everything will be using client/server model for simplicity).
+	var rtc: WebRTCMultiplayerPeer = WebRTCMultiplayerPeer.new()
+	# Use the same id as the WebSocket connection, for simplicity.
+	var rtc_id: int = _websocket_side.multiplayer.get_unique_id()
+	if rtc_id == 0:
+		await _websocket_side.multiplayer.connected_to_server
+		rtc_id = _websocket_side.multiplayer.get_unique_id()
+	# Determine if this peer should be server or client (based on role in WebSocket connection).
+	if rtc_id == 1:
+		rtc.create_server()
+		if debug: print (\"WebRTC server created.\")
+	else:
+		rtc.create_client(rtc_id)
+		if debug: print (\"WebRTC client created.\")
+		if debug: print (\"WebRTC client sending existence to the server.\")
+	multiplayer.multiplayer_peer = rtc
+	# Client initiates information exchange with server.
+	if rtc_id > 1:
+		var connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
+		connection.session_description_created.connect( func (type: String, sdp: String) -> void:
+			if debug: print (\"CLIENT SIDE SDP CREATED\")
+			connection.set_local_description(type, sdp)
+			_websocket_side._add_client_sdp.rpc_id(1, type, sdp)
+		)
+		connection.ice_candidate_created.connect(func (media: String, ice_index: int, name_arg: String) -> void:
+			if debug: print (\"CLIENT SIDE ICE CREATED\")
+			_websocket_side._add_client_ice.rpc_id(1, media, ice_index, name_arg)
+		)
+		multiplayer.multiplayer_peer.add_peer(connection,1)
+		_websocket_side._client_introduction.rpc_id(1)
+
+# Called from signalling server, as part of information exchange.
+func _add_client_sdp (peer_id: int, type: String, sdp: String) -> void:
+	if debug:
+		print (\"ADDING CLIENT SDP for \", get_path(), \": \", type, \" :: \", sdp)
+	var rtc: WebRTCMultiplayerPeer = multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
+	connection.set_remote_description(type, sdp)
+func _add_client_ice (peer_id: int, media: String, index: int, name_arg: String) -> void:
+	if debug:
+		print (\"ADDING CLIENT ICE for \", get_path(), \": \", media, \" :: \", index, \" :: \", name_arg)
+	var rtc: WebRTCMultiplayerPeer = multiplayer.multiplayer_peer
+	var connection: WebRTCPeerConnection = rtc.get_peer(peer_id)['connection']
+	connection.add_ice_candidate(media, index, name_arg)
+
+func _add_server_sdp (type: String, sdp: String) -> void:
+	if debug:
+		print (\"ADDING SERVER SDP for \", get_path(), \": \", type, \" :: \", sdp)
+	var rtc: WebRTCMultiplayerPeer = multiplayer.multiplayer_peer
+	assert (len(rtc.get_peer(1)) > 0)
+	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
+	connection.set_remote_description(type, sdp)
+func _add_server_ice (media: String, index: int, name_arg: String) -> void:
+	if debug:
+		print (\"ADDING SERVER ICE for \", get_path(), \": \", media, \" :: \", index, \" :: \", name_arg)
+	var rtc: WebRTCMultiplayerPeer = multiplayer.multiplayer_peer
+	assert (len(rtc.get_peer(1)) > 0)
+	var connection: WebRTCPeerConnection = rtc.get_peer(1)['connection']
+	connection.add_ice_candidate(media, index, name_arg)
+"
+
+[sub_resource type="GDScript" id="GDScript_24h40"]
+script/source = "extends Node
+
+@export var debug: bool = false
+
+var _webrtc_side: Node
+
+# Called by a client to the server, to start the RTC connection process.
+@rpc(\"any_peer\",\"reliable\")
+func _client_introduction () -> void:
+	if debug: print (\"WebRTC server received introductory signal from a client.\")
+	# Get id of the peer that initiated the request
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	assert (peer_id > 0)
+	var connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
+	connection.session_description_created.connect( func (type: String, sdp: String) -> void:
+		if debug: print (\"SERVER SIDE SDP CREATED\")
+		connection.set_local_description(type, sdp)
+		_add_server_sdp.rpc_id(peer_id, type, sdp)
+	)
+	connection.ice_candidate_created.connect( func (media: String, ice_index: int, name_arg: String) -> void:
+		if debug: print (\"SERVER SIDE ICE CANDIDATE CREATED\")
+		_add_server_ice.rpc_id(peer_id, media, ice_index, name_arg)
+	)
+	_webrtc_side.multiplayer.multiplayer_peer.add_peer(connection, peer_id)
+	if debug: print (\"WebRTC server creating offer for client.\")
+	connection.create_offer()
+
+# Use these WebSocket-backed RPC functions for mediating the creation of WebRTC connections for the multiplayer races.
+
+@rpc(\"any_peer\",\"reliable\")
+func _add_client_sdp (type: String, sdp: String) -> void:
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	_webrtc_side._add_client_sdp (peer_id, type, sdp)
+@rpc(\"any_peer\",\"reliable\")
+func _add_client_ice (media: String, index: int, name_arg: String) -> void:
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	_webrtc_side._add_client_ice (peer_id, media, index, name_arg)
+
+@rpc(\"authority\",\"reliable\")
+func _add_server_sdp (type: String, sdp: String) -> void:
+	_webrtc_side._add_server_sdp (type, sdp)
+@rpc(\"authority\",\"reliable\")
+func _add_server_ice (media: String, index: int, name_arg: String) -> void:
+	_webrtc_side._add_server_ice (media, index, name_arg)
+"
+
+[node name="AutoWebRTC" type="Node"]
+script = SubResource("GDScript_4ubst")
+
+[node name="Signal" type="Node" parent="."]
+script = SubResource("GDScript_24h40")

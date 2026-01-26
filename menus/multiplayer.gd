@@ -60,80 +60,14 @@ func _server_request_new_game () -> void:
 # Create an instance of a running game, and set up multiplayer functionality.
 @rpc("authority","call_local","reliable")
 func _spawn_game (index: int, manager_id: int) -> void:
-	var game: Game = Game.new()
+	var game: Game = load("res://game.tscn").instantiate()
 	game.name = "game_"+str(index)
-
-	# The peer where this function is running.
-	var peer_id: int = multiplayer.get_unique_id()
-
-	# Prepare an RTC connection for this race.
-
-	# First, use a unique MultiplayerAPI for the race (so the communication is only performed
-	# for the participating racers.
-	var multiplayer_path: NodePath = NodePath("/root/TitleScreen/Multiplayer/"+game.name)
-	if get_tree().get_multiplayer(multiplayer_path) == multiplayer:
-		print ("Setting independent multiplayer API for ", game.name)
-		get_tree().set_multiplayer(SceneMultiplayer.new(), multiplayer_path)
-
-	# Next, make sure a WebRTCMultiplayerPeer is created once the race is in the tree.
-	# Create in server mode for the server, and client mode for the client.
-	# (not using fully connected mesh of peers, everything will be using client/server model for simplicity).
-	var rtc: WebRTCMultiplayerPeer = WebRTCMultiplayerPeer.new()
-	# Establish WebRTC connection (pass SDP / ICE information)
-	var connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
-	if peer_id == 1:
-		game.tree_entered.connect( func () -> void:
-			# Make sure WebRTC is set up for this game (not using WebSocket manager).
-			assert (game.multiplayer.multiplayer_peer != game.get_parent().multiplayer.multiplayer_peer)
-			rtc.create_server()
-			game.multiplayer.multiplayer_peer = rtc
-			print ("Server peer created.")
-###
-			connection.session_description_created.connect( func (type: String, sdp: String) -> void:
-				#print ("SERVER SIDE SDP CREATED")
-				connection.set_local_description(type, sdp)
-				add_server_sdp.rpc_id(peer_id, game.name, type, sdp)
-			)
-			connection.ice_candidate_created.connect( func (media: String, ice_index: int, name_arg: String) -> void:
-				#print ("SERVER SIDE ICE CANDIDATE CREATED")
-				add_server_ice.rpc_id(peer_id, game.name, media, ice_index, name_arg)
-			)
-			game.multiplayer.multiplayer_peer.add_peer(connection, peer_id)
-			#print ("CREATING OFFER")
-			connection.create_offer()
-###
-		)
-	else:
-		game.tree_entered.connect( func () -> void:
-			# Make sure WebRTC is set up for this game (not using WebSocket manager).
-			assert (game.multiplayer.multiplayer_peer != game.get_parent().multiplayer.multiplayer_peer)
-			# Use same unique peer id as the WebSocket connection, for consistency.
-			rtc.create_client(peer_id)
-			game.multiplayer.multiplayer_peer = rtc
-			print ("Client peer created.")
-###
-			connection.session_description_created.connect( func (type: String, sdp: String) -> void:
-				#print ("CLIENT SIDE SDP CREATED")
-				connection.set_local_description(type, sdp)
-				add_client_sdp.rpc_id(1, game.name, type, sdp)
-			)
-			connection.ice_candidate_created.connect(func (media: String, ice_index: int, name_arg: String) -> void:
-				#print ("CLIENT SIDE ICE CREATED")
-				add_client_ice.rpc_id(1, game.name, media, ice_index, name_arg)
-			)
-###
-		)
-	# Clean up MultiplayerAPI objects once the race is completed.
-	game.tree_exiting.connect( func () -> void:
-		#print ("Removing independent multiplayer API for ", race.name)
-		get_tree().set_multiplayer(null, game.get_path())
-	)
-
-	rtc.add_peer(connection, 1)
-
-
+	game.rtc_id = multiplayer.get_unique_id()
+	#TODO: connect signals for communicating SDP / ICE info
 	# Launch the multiplayer game.
 	add_child(game)
+	print ('?? ', game)
+	await game.ready  # Wait until game is fully defined in the tree.
 	await game.run(index, manager_id, _handle.text)
 	remove_child(game)
 

@@ -32,8 +32,8 @@ func run (manager: int, handle: String) -> Dictionary:
 	return status
 
 # Initialize the menu (from server / local instance).
-func setup (new_race_id: int, track: String, locked_cars: Array[String]) -> void:
-	self.race_id = new_race_id
+func setup (manager: int, track: String, locked_cars: Array[String]) -> void:
+	self.manager_id = manager
 	#TODO: get available cars from track info, and set up the panels accordingly.
 	for panel: CarSelectionPanel in $MarginContainer/CenterContainer/VBoxContainer/GridContainer.get_children():
 		if panel.car.display_name in locked_cars:
