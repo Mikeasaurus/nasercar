@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b4tklj1nsft7a"]
+[gd_scene load_steps=27 format=3 uid="uid://b4tklj1nsft7a"]
 
 [ext_resource type="Script" uid="uid://biv1bchek2mp7" path="res://world.gd" id="1_5oo6t"]
 [ext_resource type="PackedScene" uid="uid://cws2bh67ogk0f" path="res://race-interface/map_overlay.tscn" id="2_26xuy"]
@@ -14,7 +14,6 @@
 [ext_resource type="AudioStream" uid="uid://sb6b80flvtof" path="res://audio/744985__aalorv__dice-rolls-d20-big.wav" id="18_6u6mv"]
 [ext_resource type="AudioStream" uid="uid://yl6b31bsw74b" path="res://audio/9509__petenice__whoosh.wav" id="19_v8dck"]
 [ext_resource type="Texture2D" uid="uid://dhkns5jdsokx5" path="res://items/beetle.png" id="20_2txdk"]
-[ext_resource type="PackedScene" uid="uid://cguqbtworp0s" path="res://auto_web_rtc.tscn" id="22_wukud"]
 [ext_resource type="Texture2D" uid="uid://djp4ddgp1u356" path="res://items/mangojumpscare1.png" id="24_agiui"]
 [ext_resource type="Texture2D" uid="uid://chgkx7ospw7nq" path="res://items/mangojumpscare2.png" id="25_i4jp1"]
 [ext_resource type="Texture2D" uid="uid://ri5uq3ksqa3o" path="res://items/slimedscreen1.png" id="26_ftddp"]
@@ -444,8 +443,6 @@ stream = ExtResource("29_xj85u")
 
 [node name="PauseMenu" parent="ScreenEffects" instance=ExtResource("30_kkwd5")]
 visible = false
-
-[node name="AutoWebRTC" parent="." instance=ExtResource("22_wukud")]
 
 [node name="RaceSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pcovh")
