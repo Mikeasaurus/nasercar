@@ -97,7 +97,7 @@ func new_game () -> void:
 
 func _on_single_player_pressed() -> void:
 	$MarginContainer.hide()
-	await $SinglePlayer.run(1, 1, "Player")
+	await $SinglePlayer.run("Player")
 	$MarginContainer.show()
 
 # When multiplayer is clicked, need to start a connection to the server.

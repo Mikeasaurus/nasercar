@@ -62,13 +62,15 @@ func _server_request_new_game () -> void:
 func _spawn_game (index: int, manager_id: int) -> void:
 	var game: Game = load("res://game.tscn").instantiate()
 	game.name = "game_"+str(index)
-	# Launch the multiplayer game.
 	add_child(game)
-	print ('?? ', game)
-	#await game.ready  # Wait until game is fully defined in the tree.
-	print ("RUN")
-	await game.run(index, manager_id, _handle.text)
-	print ("DONE")
+	# Wait until WebRTC is available.
+	if not game.get_node("AutoWebRTC").rtc_ready:
+		await game.get_node("AutoWebRTC").rtc_ready_signal
+	print ("Setting manager_id to ", manager_id)
+	if multiplayer.get_unique_id() == 1:
+		game.setup(manager_id)
+	# Launch the multiplayer game.
+	await game.run(_handle.text)
 	remove_child(game)
 
 # Update list of races available.

@@ -5,7 +5,7 @@ class_name CarSelection
 var selection: CarSelectionPanel = null
 
 # The id  of the player who initiated the race.
-var manager_id: int
+var manager_id: int = 1
 
 # The handle of this player.
 var own_handle: String = "Player"
@@ -23,8 +23,7 @@ signal _done (Dictionary)
 
 # This is called by the parent menu to wait for a car to be selected.
 # Returns the participants for the race.
-func run (manager: int, handle: String) -> Dictionary:
-	manager_id = manager
+func run (handle: String) -> Dictionary:
 	own_handle = handle
 	show()
 	var status: Dictionary = await _done
@@ -32,8 +31,9 @@ func run (manager: int, handle: String) -> Dictionary:
 	return status
 
 # Initialize the menu (from server / local instance).
-func setup (manager: int, track: String, locked_cars: Array[String]) -> void:
+func setup (manager: int, locked_cars: Array[String]) -> void:
 	self.manager_id = manager
+	print ('>> ', manager)
 	#TODO: get available cars from track info, and set up the panels accordingly.
 	for panel: CarSelectionPanel in $MarginContainer/CenterContainer/VBoxContainer/GridContainer.get_children():
 		if panel.car.display_name in locked_cars:
@@ -145,6 +145,7 @@ func _try_selecting_car (panel_index: int, handle: String) -> void:
 	if old_car_name != "":
 		_update_panel.rpc(name2index(old_car_name),false,-1,"")
 	# If this player is also the host, then they can join the race whenever they're ready.
+	print ('?? ', player_id, ' ', manager_id)
 	if player_id == manager_id:
 		_enable_race_button.rpc_id(player_id)
 		_info.rpc_id(player_id,"You can wait for others to join, or press \"RACE!\" when you're ready to start.")

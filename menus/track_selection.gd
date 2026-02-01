@@ -5,11 +5,14 @@ extends Control
 ## The currently selected track.
 var selected_track: int
 
+## The peer responsible for track selection.
+var manager_id: int
+
 # This internal signal is emitted when the user is done interacting with this menu
 # (either when a track is chosen or the user cancels).
 signal _done (int)
 
-func run(manager_id: int) -> String:
+func run() -> String:
 	show()
 	var track_index: int = await _done
 	hide()
@@ -17,6 +20,9 @@ func run(manager_id: int) -> String:
 		return tracks[track_index]
 	else:
 		return ""
+
+func setup(manager: int) -> void:
+	manager_id = manager
 
 func _ready() -> void:
 	# Add the tracks to the list.

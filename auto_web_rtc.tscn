@@ -7,11 +7,22 @@ extends Node
 ## Print debug information to the console.
 @export var debug: bool = false
 
+## Enable / disable auto WebRTC.
+## Note: This has no effect if changed at runtime.
+@export var enabled: bool = true
+
+## Indicates if the WebRTC connection is available.
+var rtc_ready: bool = false
+## Emitted once the WebRTC connection is available.
+signal rtc_ready_signal
+
+
 # Connection between WebRTC and WebSocket versions of this scene.
 var _websocket_side: Node
 
 # This is called when the bridge has entered a tree.
 func _enter_tree() -> void:
+	if not enabled: return
 	if debug: print (\"Will use WebRTC for multiplayer on \", get_parent().get_path())
 	get_tree().set_multiplayer(SceneMultiplayer.new(), get_parent().get_path())
 	# Move signalling node into grandparent class, so it can continue to use WebSocket.
@@ -20,12 +31,14 @@ func _enter_tree() -> void:
 	_websocket_side.call_deferred(\"reparent\",get_parent().get_parent())
 
 func _exit_tree() -> void:
+	if not enabled: return
 	if debug: print (\"Cleaning up WebRTC for \", get_path())
 	get_tree().set_multiplayer(null, get_path())
 	# Need to clean up signalling node explicitly, since it's not a child of this node anymore.
 	_websocket_side.queue_free()
 
 func _ready() -> void:
+	if not enabled: return
 	# Auto-start WebRTC if WebSocket is already available.
 	await _websocket_side.tree_entered  # Wait until the Signal node is fully reparented.
 	if _websocket_side.multiplayer.multiplayer_peer is WebSocketMultiplayerPeer:
@@ -81,6 +94,8 @@ func start() -> void:
 		)
 		multiplayer.multiplayer_peer.add_peer(connection,1)
 		_websocket_side._client_introduction.rpc_id(1)
+	rtc_ready = true
+	rtc_ready_signal.emit()
 
 # Called from signalling server, as part of information exchange.
 func _add_client_sdp (peer_id: int, type: String, sdp: String) -> void:

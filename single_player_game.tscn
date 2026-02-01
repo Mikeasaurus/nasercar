@@ -11,3 +11,6 @@ locked_cars = Array[String](["Naomi"])
 [node name="Naomi" parent="." index="2" instance=ExtResource("2_kyyhl")]
 visible = false
 layout_mode = 1
+
+[node name="AutoWebRTC" parent="." index="3"]
+enabled = false
