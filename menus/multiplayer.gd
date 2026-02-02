@@ -12,6 +12,8 @@ func run() -> void:
 		peer.create_client("wss://nasercar.mikeasaurus.ca:1158")
 	multiplayer.multiplayer_peer = peer
 	show()
+	# Allow user to immediately type out their nickname.
+	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer2/Handle.grab_focus()
 	# Disconnect after player is done with multiplayer mode.
 	await $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.pressed
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
