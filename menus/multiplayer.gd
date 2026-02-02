@@ -45,6 +45,8 @@ func _on_new_button_pressed() -> void:
 		return
 	$NameWarning.hide()
 	_server_request_new_game.rpc_id(1)
+func _on_handle_text_submitted(_new_text: String) -> void:
+	_on_new_button_pressed()
 @rpc("any_peer","reliable")
 func _server_request_new_game () -> void:
 	# Find an available index for the game.

@@ -101,5 +101,6 @@ text = "Please enter your handle for multiplayer."
 horizontal_alignment = 1
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="text_submitted" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer2/Handle" to="." method="_on_handle_text_submitted"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/NewButton" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ClickSound" method="play"]
