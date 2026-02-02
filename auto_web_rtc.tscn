@@ -33,7 +33,7 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	if not enabled: return
 	if debug: print (\"Cleaning up WebRTC for \", get_path())
-	get_tree().set_multiplayer(null, get_path())
+	get_tree().set_multiplayer(null, get_parent().get_path())
 	# Need to clean up signalling node explicitly, since it's not a child of this node anymore.
 	_websocket_side.queue_free()
 
