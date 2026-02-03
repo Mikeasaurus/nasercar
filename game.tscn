@@ -23,6 +23,3 @@ visible = false
 layout_mode = 1
 
 [node name="AutoWebRTC" parent="." instance=ExtResource("4_fc0e3")]
-
-[node name="RaceSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("..")
