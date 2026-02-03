@@ -74,7 +74,16 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	if multiplayer.get_unique_id() == 1:
 		game.setup(manager_id)
 	# Launch the multiplayer game.
+	# Disable the controls for this screen, so they don't interfere with the game.
+	# Otherwise, things like escape key would trigger the 'Back' button from here.
+	# (Keep running on server instance, though, because otherwise server stops working haha)
+	if multiplayer.get_unique_id() != 1:
+		process_mode = Node.PROCESS_MODE_DISABLED
 	await game.run(_handle.text)
+	# Resume this interface after race is finished.
+	if multiplayer.get_unique_id() != 1:
+		process_mode = Node.PROCESS_MODE_INHERIT
+	print (multiplayer.get_unique_id(), " RETURNING")
 	remove_child(game)
 
 # Update list of races available.

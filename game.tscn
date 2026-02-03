@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cguqbtworp0s" path="res://auto_web_rtc.tscn" id="4_fc0e3"]
 
 [node name="Game" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
