@@ -120,21 +120,6 @@ func set_track (new_track: Track) -> void:
 # Called to do final setup of race, and start it.
 func run (participants_in: Dictionary) -> int:
 
-	# For multiplayer games, make sure WebRTC connections are established before starting.
-	if multiplayer.multiplayer_peer is WebRTCMultiplayerPeer:
-		# Server wait for client connections
-		if multiplayer.get_unique_id() == 1:
-			var rtc: WebRTCMultiplayerPeer = multiplayer.multiplayer_peer
-			for peer_id in participants_in.keys():
-				while not rtc.has_peer(peer_id) or not rtc.get_peer(peer_id)['connected']:
-					#print ('server waiting for connection to ', peer_id)
-					await multiplayer.multiplayer_peer.peer_connected
-		# Client wait for server connection
-		else:
-			if not multiplayer.multiplayer_peer.get_peer(1)['connected']:
-				#print (multiplayer.get_unique_id(), ' waiting for server connection')
-				await multiplayer.multiplayer_peer.peer_connected
-
 	# Move the map icon for this player's car to the front of visibility on local screen.
 	var id: int = multiplayer.get_unique_id()
 	if id in participants_in:
