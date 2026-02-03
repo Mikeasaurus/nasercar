@@ -57,7 +57,7 @@ func run (handle: String) -> void:
 		remove_child(race)
 		if place <= 0: break
 		# Conclusion (e.g. unlocking new cars, etc.)
-		_race_ended(track_name, place)
+		await _race_ended(track_name, place)
 		# Back to track selection
 		break #TODO
 	hide()

@@ -32,6 +32,8 @@ func _on_help_pressed() -> void:
 
 func _on_single_player_pressed() -> void:
 	$MarginContainer.hide()
+	# Set up single player game (sets manager id to "1" (local player), and hides locked cars).
+	$SinglePlayer.setup(1)
 	await $SinglePlayer.run("Player")
 	$MarginContainer.show()
 
