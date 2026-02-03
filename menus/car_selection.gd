@@ -14,10 +14,6 @@ var own_handle: String = "Player"
 # Keys are the player ids, values are [handle,car_name].
 var participants: Dictionary = {}
 
-# This signal is emitted whenever the list of participants is updated for the race.
-# Sent within server instance only.
-signal participants_updated (Dictionary)
-
 # Internal signal for when kart selection is done / cancelled.
 signal _done (Dictionary)
 
@@ -33,8 +29,6 @@ func run (handle: String) -> Dictionary:
 # Initialize the menu (from server / local instance).
 func setup (manager: int, locked_cars: Array[String]) -> void:
 	self.manager_id = manager
-	print ('>> ', manager)
-	#TODO: get available cars from track info, and set up the panels accordingly.
 	for panel: CarSelectionPanel in $MarginContainer/CenterContainer/VBoxContainer/GridContainer.get_children():
 		if panel.car.display_name in locked_cars:
 			panel.hide()
@@ -75,48 +69,8 @@ func _panel_selected (panel: CarSelectionPanel) -> void:
 	panel.select()
 	_update_headshot(panel)
 	participants[1] = ["Player", index2name(panel_index)]
-	if $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled:
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
-
-# Helper function - face out the screen.
-# Can also be triggered from a server process for multiplayer games.
-var _fadeout_time: float = 1.0
-@rpc("authority","reliable")
-func _fadeout() -> void:
-	$StartEngineSound.play()
-	var tween: Tween = create_tween()
-	tween.tween_property(self,"modulate",Color.BLACK,_fadeout_time)
-	await tween.finished
-
-# Called when the user clicks the "Race" button.
-func _on_race_button_pressed() -> void:
-	# Disable any further button presses.
-	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = true
-	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
-	_panels_selectable = false
-	# If this is a single player game, send signal back to parent scene that we're ready.
-	if multiplayer.get_unique_id() == 1:
-		await _fadeout()
-		_done.emit(participants)
-	# If this is a multiplayer game, delegate to the server for sending the signal to
-	# its parent scene.
-	else:
-		_try_starting_race.rpc_id(1)
-# Called from client to server, to request the race to start.
-@rpc("any_peer","reliable")
-func _try_starting_race() -> void:
-	# Remove this from the list of available races, since it has now started.
-	participants_updated.emit({})
-	# Send some signals to all participating players.
-	for p in participants.keys():
-		# Fade out their screen as a heads-up that the race is beginning.
-		_fadeout.rpc_id(p)
-	await get_tree().create_timer(_fadeout_time).timeout
-	# Send the list of participants.
-	_send_done.rpc(participants)
-@rpc("authority","call_local","reliable")
-func _send_done (status: Dictionary) -> void:
-	_done.emit(status)
+	if $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled:
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
 
 # Handle remote updates of kart selections
 # This is called on the server when the user clicks on a kart in multiplayer context.
@@ -138,19 +92,11 @@ func _try_selecting_car (panel_index: int, handle: String) -> void:
 	if player_id in participants:
 		old_car_name = participants[player_id][1]
 	participants[player_id] = [handle,car_name]
-	participants_updated.emit(participants)
 	# Tell other peers that this car is now taken.
 	_update_panel.rpc(panel_index,true,player_id,handle)
 	# Also, free up previously taken car.
 	if old_car_name != "":
 		_update_panel.rpc(name2index(old_car_name),false,-1,"")
-	# If this player is also the host, then they can join the race whenever they're ready.
-	print ('?? ', player_id, ' ', manager_id)
-	if player_id == manager_id:
-		_enable_race_button.rpc_id(player_id)
-		_info.rpc_id(player_id,"You can wait for others to join, or press \"RACE!\" when you're ready to start.")
-	else:
-		_info.rpc_id(player_id,"Waiting for the host to start the race.")
 
 # This is called by a new peer to request updated status of the selection panels.
 @rpc("any_peer","reliable")
@@ -205,12 +151,10 @@ func _info (msg: String) -> void:
 # If joining into a multiplayer game, update the status of all karts.
 func _on_visibility_changed() -> void:
 	if visible:
-		# If this was faded out, then bring it back.
-		modulate = Color.WHITE
 		# Enable "Back" button (may have been disabled in previous interaction with this scene).
 		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
 		# Could start next race with previously selected character (at least for single player game).
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
 		# Panels can be clicked.
 		_panels_selectable = true
 	# The rest of this is for multiplayer games.
@@ -241,27 +185,17 @@ func _update_headshot (panel: CarSelectionPanel) -> void:
 	$SelectionSound.play()
 
 # This is called if a player has disconnected from the server.
+# Refreshes the panel screen for those who are still selecting a car.
+#TODO: more general "update scene" trigger, e.g. if player becomes manager after old manager leaves.
 func _player_bailed (player_id: int) -> void:
-	# If this player was hosting the race, then bail on the whole race.
-	if player_id == manager_id:
-		_race_bailed()
-		return
-	# Otherwise, just clear out the player and free any selected kart.
 	if player_id in participants:
 		var car_name: String = participants[player_id][1]
 		if car_name != "":
 			_update_panel.rpc(name2index(car_name),false,-1,"")
 		participants.erase(player_id)
-		participants_updated.emit(participants)
-# This is also from server side.
-func _race_bailed () -> void:
-	# Kick out all players.
-	_send_done.rpc({-1:"The race was cancelled by the host."})
-	# Need to clear out participants list, because there's a weird race condition where if
-	# other players are joining in, they will send out a signal after the host bails, and will
-	# broadcast the list of participants.
-	participants.clear()
-	participants_updated.emit(participants)
 
 func _on_back_button_pressed() -> void:
 	_done.emit({})
+
+func _on_continue_button_pressed() -> void:
+	_done.emit(participants)

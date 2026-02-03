@@ -2,15 +2,20 @@ extends Control
 
 class_name Game
 
+# NOTE: Most (if not all) attributes here are defined on server side / local only,
+# and delegated to clients through appropriate RPC functions.
+
 ## Cars that start off as locked in single player game.
 @export var locked_cars: Array[String] = []
 
 # The peer who is managing this game (for multiplayer games).
 var manager_id: int = 1
 
-# Lookup table of the handles of peers connected to the game.
-# Available to the server instance only, not clients.
-#var handles: Dictionary[int,String] = {}
+# The name of the current track (once selected).
+var track_name: String = ""
+
+# The list of participants for the game.
+var participants: Dictionary = {}
 
 
 # Set the manager for the game.
@@ -29,15 +34,15 @@ func run (handle: String) -> void:
 	print ('?? ', multiplayer.multiplayer_peer)
 	print ("Running ", name, " from peer ", multiplayer.get_unique_id())
 	show()
-	while true:
+	# Character selection
+	participants = await $CarSelection.run(handle)
+	while len(participants) > 0:
 		# Track selection
-		var track_name: String = await $TrackSelection.run()
+		track_name = ""
+		track_name = await $TrackSelection.run()
 		print ("Track selected: '"+track_name+"'")
 		if track_name == "": break
 		var track: Track = load("res://tracks/%s.tscn"%track_name).instantiate()
-		# Character selection
-		var participants: Dictionary = await $CarSelection.run(handle)
-		if len(participants) == 0: break
 		# Race
 		var race: World = load("res://world.tscn").instantiate()
 		# Offset the race from origin so it doesn't collide with other races.
@@ -54,6 +59,7 @@ func run (handle: String) -> void:
 		# Conclusion (e.g. unlocking new cars, etc.)
 		_race_ended(track_name, place)
 		# Back to track selection
+		break #TODO
 	hide()
 
 

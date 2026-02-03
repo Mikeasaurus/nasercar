@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bvoj5fwm75u8v" path="res://cars/naomi_car.tscn" id="8_1csdl"]
 [ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="11_1wam5"]
 [ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="11_smolx"]
-[ext_resource type="AudioStream" uid="uid://cstdfowewsv0g" path="res://audio/253614__xtrgamr__honda-cr-v-start.wav" id="13_s6hmk"]
+[ext_resource type="AudioStream" uid="uid://blb4gqxo35l3b" path="res://audio/219069__annabloom__click1.wav" id="12_l0eg8"]
 [ext_resource type="AudioStream" uid="uid://dtlad5xjdaldk" path="res://audio/446111__justinvoke__success-jingle.wav" id="16_yi1oq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvpv1"]
@@ -183,11 +183,14 @@ alignment = 1
 [node name="BackButton" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("11_smolx")]
 layout_mode = 2
 
-[node name="RaceButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="ContinueButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 disabled = true
-text = "     RACE!     "
+text = " Continue "
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+stream = ExtResource("12_l0eg8")
 
 [node name="Info" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -213,10 +216,7 @@ horizontal_alignment = 1
 [node name="SelectionSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_yi1oq")
 
-[node name="StartEngineSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_s6hmk")
-volume_db = 10.0
-
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton" to="." method="_on_race_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ClickSound" method="play"]

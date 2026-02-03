@@ -26,10 +26,10 @@ func setup(manager: int) -> void:
 	var peer_id: int = multiplayer.get_unique_id()
 	if peer_id == manager_id:
 		$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Choose a track"
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
 	else:
 		$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Waiting for host to choose a track"
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = true
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
 
 func _ready() -> void:
 	# Add the tracks to the list.
@@ -66,15 +66,50 @@ func _select (i: int) -> void:
 func _on_back_button_pressed() -> void:
 	_done.emit(-1)
 
-func _on_continue_button_pressed() -> void:
-	_submit_race.rpc_id(1)
+# Helper function - face out the screen.
+# Can also be triggered from a server process for multiplayer games.
+var _fadeout_time: float = 1.0
+@rpc("authority","reliable")
+func _fadeout() -> void:
+	$StartEngineSound.play()
+	var tween: Tween = create_tween()
+	tween.tween_property(self,"modulate",Color.BLACK,_fadeout_time)
+	await tween.finished
 
-@rpc("any_peer","call_local","reliable")
-func _submit_race () -> void:
-	if multiplayer.get_remote_sender_id() == manager_id:
-		# Tell all players that track selection is done.
-		_broadcast_track.rpc(selected_track)
-
+# Called when the user clicks the "Race" button.
+func _on_race_button_pressed() -> void:
+	# Disable any further button presses.
+	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = true
+	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
+	# If this is a single player game, send signal back to parent scene that we're ready.
+	if multiplayer.get_unique_id() == 1:
+		await _fadeout()
+		_done.emit(selected_track)
+	# If this is a multiplayer game, delegate to the server for sending the signal to
+	# its parent scene.
+	else:
+		_try_starting_race.rpc_id(1)
+# Called from client to server, to request the race to start.
+@rpc("any_peer","reliable")
+func _try_starting_race() -> void:
+	# Send some signals to all participating players.
+	#TODO
+	#for p in participants.keys():
+	#	# Fade out their screen as a heads-up that the race is beginning.
+	#	_fadeout.rpc_id(p)
+	await get_tree().create_timer(_fadeout_time).timeout
+	# Send the list of participants.
+	#TODO
+	#_send_done.rpc(participants)
 @rpc("authority","call_local","reliable")
-func _broadcast_track (i: int) -> void:
-	_done.emit(i)
+func _send_done (status: Dictionary) -> void:
+	_done.emit(status)
+
+func _on_visibility_changed() -> void:
+	if visible:
+		# If this was faded out, then bring it back.
+		modulate = Color.WHITE
+		# Enable "Back" button (may have been disabled in previous interaction with this scene).
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
+		# Could start next race with previously selected track (at least for single player game).
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false

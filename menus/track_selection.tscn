@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://5kel4rk4hw3x" path="res://menus/track_selection.gd" id="1_x5ber"]
 [ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="2_bie1k"]
 [ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="2_x5ber"]
-[ext_resource type="AudioStream" uid="uid://blb4gqxo35l3b" path="res://audio/219069__annabloom__click1.wav" id="3_chayd"]
+[ext_resource type="AudioStream" uid="uid://cstdfowewsv0g" path="res://audio/253614__xtrgamr__honda-cr-v-start.wav" id="4_chayd"]
 
 [node name="TrackSelection" type="Control"]
 layout_mode = 3
@@ -56,17 +56,18 @@ theme_override_constants/separation = 100
 [node name="BackButton" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_x5ber")]
 layout_mode = 2
 
-[node name="ContinueButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="RaceButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = " Continue "
-
-[node name="ClickSound" type="AudioStreamPlayer" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-stream = ExtResource("3_chayd")
+text = "     RACE!     "
 
 [node name="FullScreenToggle" parent="." instance=ExtResource("2_bie1k")]
 layout_mode = 0
 
+[node name="StartEngineSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_chayd")
+volume_db = 10.0
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ClickSound" method="play"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton" to="." method="_on_race_button_pressed"]

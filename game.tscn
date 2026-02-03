@@ -15,11 +15,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_80nbo")
 
-[node name="TrackSelection" parent="." instance=ExtResource("2_feb5d")]
+[node name="CarSelection" parent="." instance=ExtResource("3_fc0e3")]
 visible = false
 layout_mode = 1
 
-[node name="CarSelection" parent="." instance=ExtResource("3_fc0e3")]
+[node name="TrackSelection" parent="." instance=ExtResource("2_feb5d")]
 visible = false
 layout_mode = 1
 
