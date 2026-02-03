@@ -12,8 +12,7 @@ class_name Track
 @export var thumbnail_image: CompressedTexture2D
 
 # Finalize some setup, such as item block interactions.
-# Only called on the server instance, or for local game.
-func setup () -> void:
+func _ready () -> void:
 	# Force the TileMapLayer to instantiate its scenes, because normally this is deferred and we can't
 	# see the sprites from this _ready() function.
 	var items: TileMapLayer = get_node("TilesAboveCars/Items")
