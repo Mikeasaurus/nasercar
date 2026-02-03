@@ -15,14 +15,14 @@ var own_handle: String = "Player"
 var participants: Dictionary = {}
 
 # Internal signal for when kart selection is done / cancelled.
-signal _done (Dictionary)
+signal _done (bool)
 
 # This is called by the parent menu to wait for a car to be selected.
 # Returns the participants for the race.
-func run (handle: String) -> Dictionary:
+func run (handle: String) -> bool:
 	own_handle = handle
 	show()
-	var status: Dictionary = await _done
+	var status: bool = await _done
 	hide()
 	return status
 
@@ -170,8 +170,6 @@ func _on_visibility_changed() -> void:
 		if multiplayer.get_unique_id() != 1:
 			# Ask server about which cars are already taken and which ones are available.
 			_sync_panels.rpc_id(1)
-			# No joining race until a car is selected.
-			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
 
 # Update the headshot being displayed for the currently selected car.
 func _update_headshot (panel: CarSelectionPanel) -> void:
@@ -195,7 +193,7 @@ func _player_bailed (player_id: int) -> void:
 		participants.erase(player_id)
 
 func _on_back_button_pressed() -> void:
-	_done.emit({})
+	_done.emit(false)
 
 func _on_continue_button_pressed() -> void:
-	_done.emit(participants)
+	_done.emit(true)

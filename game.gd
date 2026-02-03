@@ -14,16 +14,12 @@ var manager_id: int = 1
 # The name of the current track (once selected).
 var track_name: String = ""
 
-# The list of participants for the game.
-var participants: Dictionary = {}
-
-
 # Set the manager for the game.
 # Only needs to be done once.
 func setup (manager: int) -> void:
 	assert (multiplayer.get_unique_id() == 1)
 	manager_id = manager
-	$TrackSelection.setup(manager_id)
+	$TrackSelection.setup(manager_id, $CarSelection.participants)
 	$CarSelection.setup(manager_id, locked_cars)
 
 func _ready() -> void:
@@ -31,12 +27,13 @@ func _ready() -> void:
 		multiplayer.peer_disconnected.connect(peer_disconnected)
 
 func run (handle: String) -> void:
-	print ('?? ', multiplayer.multiplayer_peer)
 	print ("Running ", name, " from peer ", multiplayer.get_unique_id())
 	show()
-	# Character selection
-	participants = await $CarSelection.run(handle)
-	while len(participants) > 0:
+	var status_ok: bool = true
+	# Character selection (for players)
+	if DisplayServer.get_name() != "headless":
+		status_ok = await $CarSelection.run(handle)
+	while status_ok:
 		# Track selection
 		track_name = ""
 		track_name = await $TrackSelection.run()
@@ -53,7 +50,7 @@ func run (handle: String) -> void:
 		race.global_position.x = 100000*index
 		race.set_track(track)
 		add_child(race)
-		var place: int = await race.run(participants)
+		var place: int = await race.run($CarSelection.participants)
 		remove_child(race)
 		if place <= 0: break
 		# Conclusion (e.g. unlocking new cars, etc.)

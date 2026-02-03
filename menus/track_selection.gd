@@ -8,6 +8,10 @@ var selected_track: int
 ## The peer responsible for track selection.
 var manager_id: int = 1
 
+# Current game participants for multiplayer server.
+# (reference)
+var participants: Dictionary
+
 # This internal signal is emitted when the user is done interacting with this menu
 # (either when a track is chosen or the user cancels).
 signal _done (int)
@@ -21,8 +25,9 @@ func run() -> String:
 	else:
 		return ""
 
-func setup(manager: int) -> void:
+func setup(manager: int, participants_: Dictionary) -> void:
 	manager_id = manager
+	participants = participants_
 	var peer_id: int = multiplayer.get_unique_id()
 	if peer_id == manager_id:
 		$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Choose a track"
@@ -93,17 +98,14 @@ func _on_race_button_pressed() -> void:
 @rpc("any_peer","reliable")
 func _try_starting_race() -> void:
 	# Send some signals to all participating players.
-	#TODO
-	#for p in participants.keys():
-	#	# Fade out their screen as a heads-up that the race is beginning.
-	#	_fadeout.rpc_id(p)
+	for p in participants.keys():
+		# Fade out their screen as a heads-up that the race is beginning.
+		_fadeout.rpc_id(p)
 	await get_tree().create_timer(_fadeout_time).timeout
-	# Send the list of participants.
-	#TODO
-	#_send_done.rpc(participants)
+	_send_done.rpc(selected_track)
 @rpc("authority","call_local","reliable")
-func _send_done (status: Dictionary) -> void:
-	_done.emit(status)
+func _send_done (track: int) -> void:
+	_done.emit(track)
 
 func _on_visibility_changed() -> void:
 	if visible:
