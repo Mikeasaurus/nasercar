@@ -84,7 +84,7 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	if multiplayer.get_unique_id() != 1:
 		process_mode = Node.PROCESS_MODE_INHERIT
 	print (multiplayer.get_unique_id(), " RETURNING")
-	remove_child(game)
+	game.queue_free()
 
 # Update list of races available.
 func _server_update_list () -> void:

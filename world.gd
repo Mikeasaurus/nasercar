@@ -671,4 +671,4 @@ func _player_disconnected (player_id: int) -> void:
 	car.autopilot()
 	self.participants.erase(player_id)
 	if len(self.participants) == 0:
-		queue_free()
+		_done.emit(-1)

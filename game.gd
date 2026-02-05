@@ -51,7 +51,7 @@ func run (handle: String) -> void:
 		race.set_track(track)
 		add_child(race)
 		var place: int = await race.run($CarSelection.participants)
-		remove_child(race)
+		race.queue_free()
 		if place <= 0: break
 		# Conclusion (e.g. unlocking new cars, etc.)
 		await _race_ended(track_name, place)
