@@ -97,6 +97,13 @@ func _try_selecting_car (panel_index: int, handle: String) -> void:
 	# Also, free up previously taken car.
 	if old_car_name != "":
 		_update_panel.rpc(name2index(old_car_name),false,-1,"")
+	# Player can now proceed to the track selection screen.
+	_can_continue.rpc_id(player_id)
+@rpc("authority","call_local","reliable")
+func _can_continue() -> void:
+	if $MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled:
+		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
+
 
 # This is called by a new peer to request updated status of the selection panels.
 @rpc("any_peer","reliable")
@@ -154,7 +161,8 @@ func _on_visibility_changed() -> void:
 		# Enable "Back" button (may have been disabled in previous interaction with this scene).
 		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
 		# Could start next race with previously selected character (at least for single player game).
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
+		if selection != null:
+			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/ContinueButton.disabled = false
 		# Panels can be clicked.
 		_panels_selectable = true
 	# The rest of this is for multiplayer games.
