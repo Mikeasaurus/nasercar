@@ -657,6 +657,7 @@ func _leave_race(completed: bool = false) -> void:
 	# (the place is stored in the server context, not available here).
 	# It could be communicated, if needed for some reason.
 	elif my_id != 1:
+		# Return to Game scene.
 		_done.emit(-1)
 	# For single player games, clean up the race.
 	# Multiplayer games get cleaned up after all players disconnected from server (see below).

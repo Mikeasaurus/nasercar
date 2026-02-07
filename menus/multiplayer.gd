@@ -22,6 +22,7 @@ func run() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$RaceEntrySpawner.spawn_function = _spawn_race_entry
 	# If this is configured as a headless server, then set up the connection.
 	if DisplayServer.get_name() == "headless":
 		# Set up server, listening for incoming peers.
@@ -38,6 +39,8 @@ func _ready() -> void:
 			var tls_options := TLSOptions.server(key,cert)
 			peer.create_server(1158,"*",tls_options)
 		multiplayer.multiplayer_peer = peer
+		# Periodically check for running games, and push updated list to connected peers.
+		$GameRefreshTimer.start()
 
 
 # Player wants to start their own multiplayer session.
@@ -70,6 +73,12 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	# Wait until WebRTC is available.
 	if not game.get_node("AutoWebRTC").rtc_ready:
 		await game.get_node("AutoWebRTC").rtc_ready_signal
+		# Clean up server instance if nobody connected to the game.
+		if DisplayServer.get_name() == "headless":
+			game.multiplayer.multiplayer_peer.peer_disconnected.connect( func (_peer_id) -> void:
+				if len(game.multiplayer.multiplayer_peer.get_peers()) == 0:
+					game.queue_free()
+			)
 	print ("Setting manager_id to ", manager_id)
 	if multiplayer.get_unique_id() == 1:
 		game.setup(manager_id)
@@ -92,32 +101,10 @@ func _server_update_list () -> void:
 		if c is Game:
 			pass #TODO
 
-# This function is called to refresh the list of races.
-func update_race (race_id: int, track_name: String, participants: Dictionary) -> void:
-	var available_races: Dictionary
-	# If this is a new race, then add it to the list.
-	if race_id not in available_races:
-		available_races[race_id] = $RaceEntrySpawner.spawn(race_id)
-		var handle: String = "Someone"
-		# Get race host.
-		if race_id in participants: handle = participants[race_id][0]
-		available_races[race_id].get_node("VBoxContainer/Host").text = "%s is starting a new race"%handle
-	var entry: Node = available_races[race_id]
-	# Update number of participants.
-	entry.get_node("VBoxContainer/NumPlayers").text = "Track: \"%s\"   %d player(s) joined so far"%[track_name, len(participants)]
-	# If an empty list of participants was given, then the race is not available to join anymore.
-	if len(participants) == 0:
-		available_races.erase(race_id)
-		entry.queue_free()
-	# If no races available, then show a message.
-	if len(available_races) == 0:
-		$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoRacesLabel.show()
-	else:
-		$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoRacesLabel.hide()
 
 # Called when a new line is added to the list of available races.
 # Where is race id going to be stored?
-func _spawn_race_entry (id: int):
+func _spawn_race_entry (id: String):
 	var entry = load("res://menus/multiplayer_join_line.tscn").instantiate()
 	entry.get_node("JoinButton").pressed.connect(func ():
 		if len(_handle.text) == 0:
@@ -126,5 +113,31 @@ func _spawn_race_entry (id: int):
 		$NameWarning.hide()
 		#_done.emit(id,_handle.text)
 	)
-	entry.name = str(id)
+	entry.name = id
 	return entry
+
+func _on_game_refresh_timer_timeout() -> void:
+	var vbox: VBoxContainer = $MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer
+	var valid_games: Array[String]
+	for game_ in get_children():
+		if game_ is not Game: continue
+		var game: Game = game_
+		var participants: Array[String] = []
+		for p in game.get_node("CarSelection").participants.values():
+			participants.append(p[0])  # (handle, car)
+		var host: String = game.get_node("CarSelection").participants.get(game.manager_id,["",null])[0]
+		var id: String = game.name.split('_')[1]
+		if not vbox.has_node(id):
+			$RaceEntrySpawner.spawn(id)
+		var entry: MultiplayerJoinLine = vbox.get_node(id)
+		entry.update_race(host, participants, game.track_name)
+		valid_games.append(id)
+	# Clean up invalid / completed games.
+	for entry in vbox.get_children():
+		if entry is MultiplayerJoinLine and entry.name not in valid_games:
+			entry.queue_free()
+	# Show message if no races available.
+	if len(valid_games) == 0:
+		$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoRacesLabel.visible = true
+	else:
+		$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoRacesLabel.visible = false

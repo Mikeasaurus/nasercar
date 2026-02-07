@@ -22,10 +22,6 @@ func setup (manager: int) -> void:
 	$TrackSelection.setup(manager_id, $CarSelection.participants)
 	$CarSelection.setup(manager_id, locked_cars)
 
-func _ready() -> void:
-	if multiplayer.multiplayer_peer is not OfflineMultiplayerPeer and multiplayer.get_unique_id() == 1:
-		multiplayer.peer_disconnected.connect(peer_disconnected)
-
 func run (handle: String) -> void:
 	print ("Running ", name, " from peer ", multiplayer.get_unique_id())
 	show()
@@ -49,6 +45,7 @@ func run (handle: String) -> void:
 			index = int(name.split('_')[1])
 		race.global_position.x = 100000*index
 		race.set_track(track)
+		race.name = "race"
 		add_child(race)
 		var place: int = await race.run($CarSelection.participants)
 		race.queue_free()
@@ -63,8 +60,3 @@ func run (handle: String) -> void:
 # Called at conclusion of race
 func _race_ended (_track_name: String, _place: int) -> void:
 	pass
-
-
-# Called when a peer has disconnected from the race (called on server in multiplayer mode).
-func peer_disconnected(_peer_id: int):
-	pass #TODO
