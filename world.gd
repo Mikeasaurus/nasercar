@@ -129,6 +129,7 @@ func run (participants_in: Dictionary) -> int:
 				$MapOverlay.move_to_front(c)
 	# If this is the host, then start the race.
 	if multiplayer.get_unique_id() == 1:
+		print ("Server starting race")
 		_start_race(participants_in)
 	# Wait until race is finished, and return the final place.
 	# Place will be -1 for unfinished race?

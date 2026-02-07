@@ -63,6 +63,12 @@ func _server_request_new_game () -> void:
 	_spawn_game.rpc_id (1, index, manager_id)
 	# Spawn and launch an instance on the client side.
 	_spawn_game.rpc_id (manager_id, index, manager_id)
+@rpc("any_peer","reliable")
+func _server_request_join_game (index: int) -> void:
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	var game: Game = get_node("game_"+str(index))
+	if game == null: return
+	_spawn_game.rpc_id (peer_id, index, game.manager_id)
 
 # Create an instance of a running game, and set up multiplayer functionality.
 @rpc("authority","call_local","reliable")
@@ -95,12 +101,6 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	print (multiplayer.get_unique_id(), " RETURNING")
 	game.queue_free()
 
-# Update list of races available.
-func _server_update_list () -> void:
-	for c in get_children():
-		if c is Game:
-			pass #TODO
-
 
 # Called when a new line is added to the list of available races.
 # Where is race id going to be stored?
@@ -111,7 +111,7 @@ func _spawn_race_entry (id: String):
 			$NameWarning.show()
 			return
 		$NameWarning.hide()
-		#_done.emit(id,_handle.text)
+		_server_request_join_game.rpc_id(1, int(id))
 	)
 	entry.name = id
 	return entry
