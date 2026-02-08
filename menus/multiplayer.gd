@@ -85,8 +85,8 @@ func _spawn_game (index: int, manager_id: int) -> void:
 				if len(game.multiplayer.multiplayer_peer.get_peers()) == 0:
 					game.queue_free()
 			)
-	print ("Setting manager_id to ", manager_id)
 	if multiplayer.get_unique_id() == 1:
+		print ("Setting manager_id to ", manager_id)
 		game.setup(manager_id)
 	# Launch the multiplayer game.
 	# Disable the controls for this screen, so they don't interfere with the game.
@@ -97,7 +97,9 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	await game.run(_handle.text)
 	# Resume this interface after race is finished.
 	if multiplayer.get_unique_id() != 1:
-		process_mode = Node.PROCESS_MODE_INHERIT
+		# Defer the process mode change, so we don't pick up the escape key if it
+		# was just pressed to exit another menu.
+		set_deferred('process_mode',Node.PROCESS_MODE_INHERIT)
 	print (multiplayer.get_unique_id(), " RETURNING")
 	game.queue_free()
 
