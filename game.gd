@@ -22,6 +22,9 @@ func setup (manager: int) -> void:
 	$TrackSelection.setup(manager_id, $CarSelection.participants)
 	$CarSelection.setup(manager_id, locked_cars)
 
+func _ready() -> void:
+	$RaceSpawner.spawn_function = _spawn_race
+
 func run (handle: String) -> void:
 	print ("Running ", name, " from peer ", multiplayer.get_unique_id())
 	show()
@@ -35,18 +38,13 @@ func run (handle: String) -> void:
 		track_name = await $TrackSelection.run()
 		print ("Track selected: '"+track_name+"'")
 		if track_name == "": break
-		var track: Track = load("res://tracks/%s.tscn"%track_name).instantiate()
-		# Race
-		var race: World = load("res://world.tscn").instantiate()
-		# Offset the race from origin so it doesn't collide with other races.
-		# (for multiplayer races).
-		var index: int = 1
-		if '_' in name:
-			index = int(name.split('_')[1])
-		race.global_position.x = 100000*index
-		race.set_track(track)
-		race.name = "race"
-		add_child(race)
+		var race: World
+		if multiplayer.get_unique_id() == 1:
+			race = $RaceSpawner.spawn([name,track_name])
+		elif has_node("race"):
+			race = get_node("race")
+		else:
+			race = await child_entered_tree
 		var place: int = await race.run($CarSelection.participants)
 		race.queue_free()
 		if place <= 0: break
@@ -55,6 +53,22 @@ func run (handle: String) -> void:
 		# Back to track selection
 	hide()
 
+# Spawn a race on all peers.
+func _spawn_race (data):
+	var game_name_: String = data[0]
+	var track_name_: String = data[1]
+	var track: Track = load("res://tracks/%s.tscn"%track_name_).instantiate()
+	# Race
+	var race: World = load("res://world.tscn").instantiate()
+	# Offset the race from origin so it doesn't collide with other races.
+	# (for multiplayer races).
+	var index: int = 1
+	if '_' in game_name_:
+		index = int(game_name_.split('_')[1])
+	race.global_position.x = 100000*index
+	race.set_track(track)
+	race.name = "race"
+	return race
 
 # Called at conclusion of race
 func _race_ended (_track_name: String, _place: int) -> void:
