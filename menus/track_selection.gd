@@ -6,7 +6,7 @@ extends Control
 var selected_track: int
 
 ## The peer responsible for track selection.
-var manager_id: int = 1
+@export var manager_id: int = 1
 
 # Current game participants for multiplayer server.
 # (reference)
@@ -28,13 +28,6 @@ func run() -> String:
 func setup(manager: int, participants_: Dictionary) -> void:
 	manager_id = manager
 	participants = participants_
-	var peer_id: int = multiplayer.get_unique_id()
-	if peer_id == manager_id:
-		$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Choose a track"
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
-	else:
-		$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Waiting for host to choose a track"
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
 
 func _ready() -> void:
 	# Add the tracks to the list.
@@ -87,16 +80,20 @@ func _on_race_button_pressed() -> void:
 	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = true
 	$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
 	# If this is a single player game, send signal back to parent scene that we're ready.
-	if multiplayer.get_unique_id() == 1:
+	var peer_id: int = multiplayer.get_unique_id()
+	if peer_id == 1:
 		await _fadeout()
 		_done.emit(selected_track)
 	# If this is a multiplayer game, delegate to the server for sending the signal to
 	# its parent scene.
-	else:
+	# (can only be done by manager of the race).
+	elif peer_id == manager_id:
 		_try_starting_race.rpc_id(1)
 # Called from client to server, to request the race to start.
 @rpc("any_peer","reliable")
 func _try_starting_race() -> void:
+	var peer_id: int = multiplayer.get_remote_sender_id()
+	if peer_id != manager_id: return  # Only race manager can start the race.
 	# Send some signals to all participating players.
 	for p in participants.keys():
 		# Fade out their screen as a heads-up that the race is beginning.
@@ -114,4 +111,14 @@ func _on_visibility_changed() -> void:
 		# Enable "Back" button (may have been disabled in previous interaction with this scene).
 		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton.disabled = false
 		# Could start next race with previously selected track (at least for single player game).
-		$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
+		if multiplayer.multiplayer_peer is OfflineMultiplayerPeer or multiplayer.get_unique_id() == manager_id:
+			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
+		else:
+			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true
+		var peer_id: int = multiplayer.get_unique_id()
+		if peer_id == manager_id:
+			$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Choose a track"
+			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = false
+		else:
+			$MarginContainer/CenterContainer/VBoxContainer/Title.text = "Waiting for host to choose a track"
+			$MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/RaceButton.disabled = true

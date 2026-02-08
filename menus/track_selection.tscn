@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://d4fjxuie6wstg"]
+[gd_scene load_steps=6 format=3 uid="uid://d4fjxuie6wstg"]
 
 [ext_resource type="Script" uid="uid://5kel4rk4hw3x" path="res://menus/track_selection.gd" id="1_x5ber"]
 [ext_resource type="PackedScene" uid="uid://ed7idg0lghbn" path="res://menus/full_screen_toggle.tscn" id="2_bie1k"]
 [ext_resource type="PackedScene" uid="uid://yq4nt46yrohd" path="res://menus/back_button.tscn" id="2_x5ber"]
 [ext_resource type="AudioStream" uid="uid://cstdfowewsv0g" path="res://audio/253614__xtrgamr__honda-cr-v-start.wav" id="4_chayd"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_chayd"]
+properties/0/path = NodePath(".:manager_id")
+properties/0/spawn = true
+properties/0/replication_mode = 2
 
 [node name="TrackSelection" type="Control"]
 layout_mode = 3
@@ -67,6 +72,9 @@ layout_mode = 0
 [node name="StartEngineSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_chayd")
 volume_db = 10.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_chayd")
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
