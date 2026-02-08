@@ -53,7 +53,6 @@ func run (handle: String) -> void:
 		# Conclusion (e.g. unlocking new cars, etc.)
 		await _race_ended(track_name, place)
 		# Back to track selection
-		break #TODO
 	hide()
 
 
