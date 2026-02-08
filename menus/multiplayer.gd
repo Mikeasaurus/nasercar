@@ -76,15 +76,20 @@ func _spawn_game (index: int, manager_id: int) -> void:
 	var game: Game = load("res://game.tscn").instantiate()
 	game.name = "game_"+str(index)
 	add_child(game)
+	# Hide game list while connecting to game, to avoid weird things like player being
+	# able to click on the "Join" button into their own race that they're already starting.
+	$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer.hide()
 	# Wait until WebRTC is available.
 	if not game.get_node("AutoWebRTC").rtc_ready:
 		await game.get_node("AutoWebRTC").rtc_ready_signal
-		# Clean up server instance if nobody connected to the game.
-		if DisplayServer.get_name() == "headless":
-			game.multiplayer.multiplayer_peer.peer_disconnected.connect( func (_peer_id) -> void:
-				if len(game.multiplayer.multiplayer_peer.get_peers()) == 0:
-					game.queue_free()
-			)
+	$MarginContainer/CenterContainer/VBoxContainer/ScrollContainer/VBoxContainer.show()
+	# Clean up server instance if nobody connected to the game.
+	if DisplayServer.get_name() == "headless":
+		game.multiplayer.multiplayer_peer.peer_disconnected.connect( func (_peer_id) -> void:
+			if len(game.multiplayer.multiplayer_peer.get_peers()) == 0:
+				game.queue_free()
+		)
+	# Set up game management.
 	if multiplayer.get_unique_id() == 1:
 		print ("Setting manager_id to ", manager_id)
 		game.setup(manager_id)
