@@ -28,6 +28,9 @@ func _enter_tree() -> void:
 	# Move signalling node into grandparent class, so it can continue to use WebSocket.
 	_websocket_side = $Signal
 	_websocket_side._webrtc_side = self
+	# Use unique name for the websocket interface to avoid collisions from siblings
+	# (e.g. for multiple games run in parallel from the server).
+	_websocket_side.name = get_parent().name + \"_\" + _websocket_side.name
 	_websocket_side.call_deferred(\"reparent\",get_parent().get_parent())
 
 func _exit_tree() -> void:
