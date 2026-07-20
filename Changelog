@@ -1,3 +1,11 @@
+Version 1.1.1 (Jul 20, 2026)
+	- Updated to Godot 4.5.1.
+	- Added a meteor sprite (no longer just a shadow on the ground).
+	- Added a midi controller item.
+	- Added a train to the default track.
+	- Some improvements to multiplayer performance.
+	- Switch from WebSocket to WebRTC for multiplayer races.
+
 Version 1.1.0 (Nov 6, 2025)
 	- Updated to Godot 4.4.1.
 	- Added a new track (snowy), and a track selection menu.

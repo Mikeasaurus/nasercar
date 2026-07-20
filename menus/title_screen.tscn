@@ -161,7 +161,7 @@ offset_bottom = -17.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 48
-text = "v1.1.0"
+text = "v1.1.1"
 
 [node name="NaserCar" parent="." instance=ExtResource("5_fxytf")]
 
